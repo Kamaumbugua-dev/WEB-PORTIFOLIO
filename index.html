@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>if(typeof pdfjsLib!=='undefined')pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <style>
 /* ─── RESET & TOKENS ─────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -818,9 +819,9 @@ footer strong{color:var(--accent);font-weight:700}
     <div class="cv-layout reveal">
       <div>
         <div class="cv-upload-zone" id="uploadZone">
-          <input type="file" id="cvFileInput" accept=".txt,.pdf,.doc,.docx"/>
+          <input type="file" id="cvFileInput" accept="*/*"/>
           <div class="upload-title">Upload Resume</div>
-          <div class="upload-hint">.txt, .pdf, .doc, .docx &mdash; or click to browse</div>
+          <div class="upload-hint">.pdf, .docx, .doc, .txt, .rtf, .odt and more &mdash; or click to browse</div>
           <div class="cv-file-name" id="cvFileName"></div>
         </div>
         <div class="cv-actions">
@@ -1303,6 +1304,21 @@ uploadZone.addEventListener('drop', function(e) {
 });
 cvFileInput.addEventListener('change', function(e) { if (e.target.files[0]) handleCVFile(e.target.files[0]); });
 
+function cvFileReady(text, label) {
+  cvTextContent = text.trim();
+  document.getElementById('analyzeBtn').disabled = false;
+  document.getElementById('cvStatus').textContent = '\u2713 ' + label;
+  document.getElementById('cvStatus').className = 'cv-status ready';
+  setCVOutput('<div class="cv-placeholder"><div style="font-size:.9rem;color:var(--accent);margin-bottom:.5rem">\u2713 ' + label + '</div><div>Click \u201cAnalyze with AI\u201d to get insights.</div></div>');
+}
+
+function cvFileError(label) {
+  cvTextContent = '';
+  document.getElementById('cvStatus').textContent = label;
+  document.getElementById('cvStatus').className = 'cv-status';
+  setCVOutput('<div class="cv-placeholder" style="color:#cc4444">' + label + '</div>');
+}
+
 function handleCVFile(file) {
   cvFileObj = file;
   document.getElementById('cvFileName').textContent = '\uD83D\uDCCE ' + file.name;
@@ -1310,53 +1326,77 @@ function handleCVFile(file) {
   document.getElementById('analyzeBtn').disabled = true;
   document.getElementById('cvStatus').textContent = 'Reading file\u2026';
   document.getElementById('cvStatus').className = 'cv-status loading';
-  setCVOutput('<div class="cv-placeholder"><div class="spinner"></div><div style="margin-top:.8rem">Reading file\u2026</div></div>');
+  setCVOutput('<div class="cv-placeholder"><div class="spinner"></div><div style="margin-top:.8rem">Reading\u2026</div></div>');
 
   var ext = file.name.split('.').pop().toLowerCase();
 
+  // ── PDF ──────────────────────────────────────────────────────
   if (ext === 'pdf') {
-    // Extract text from PDF using PDF.js
     file.arrayBuffer().then(function(buf) {
       return pdfjsLib.getDocument({ data: buf }).promise;
     }).then(function(pdf) {
-      var pagePromises = [];
-      for (var i = 1; i <= pdf.numPages; i++) {
-        pagePromises.push(pdf.getPage(i).then(function(page) {
-          return page.getTextContent().then(function(tc) {
+      var pages = [];
+      for (var i = 1; i <= pdf.numPages; i++) pages.push(i);
+      return Promise.all(pages.map(function(n) {
+        return pdf.getPage(n).then(function(p) {
+          return p.getTextContent().then(function(tc) {
             return tc.items.map(function(it) { return it.str; }).join(' ');
           });
-        }));
-      }
-      return Promise.all(pagePromises);
+        });
+      }));
     }).then(function(pages) {
-      cvTextContent = pages.join('\n\n').trim();
-      if (!cvTextContent) throw new Error('empty');
-      document.getElementById('analyzeBtn').disabled = false;
-      document.getElementById('cvStatus').textContent = 'PDF read \u2014 ' + file.name;
-      document.getElementById('cvStatus').className = 'cv-status ready';
-      setCVOutput('<div class="cv-placeholder"><div style="font-size:.9rem;color:var(--accent);margin-bottom:.5rem">\u2713 PDF extracted successfully</div><div>Click \u201cAnalyze with AI\u201d to get insights.</div></div>');
-    }).catch(function() {
-      cvTextContent = '';
-      document.getElementById('cvStatus').textContent = 'Could not read PDF \u2014 try a .txt copy';
-      document.getElementById('cvStatus').className = 'cv-status';
-      setCVOutput('<div class="cv-placeholder" style="color:#cc4444">PDF text extraction failed.<br>Please save your CV as <strong>.txt</strong> and re-upload.</div>');
-    });
+      var text = pages.join('\n\n').trim();
+      if (!text) throw new Error('empty');
+      cvFileReady(text, 'PDF extracted \u2014 ' + file.name);
+    }).catch(function() { cvFileError('Could not read PDF. Try saving as .txt and re-uploading.'); });
 
-  } else if (ext === 'txt') {
+  // ── DOCX / DOC ───────────────────────────────────────────────
+  } else if (ext === 'docx' || ext === 'doc') {
+    file.arrayBuffer().then(function(buf) {
+      return mammoth.extractRawText({ arrayBuffer: buf });
+    }).then(function(result) {
+      var text = result.value.trim();
+      if (!text) throw new Error('empty');
+      cvFileReady(text, ext.toUpperCase() + ' extracted \u2014 ' + file.name);
+    }).catch(function() { cvFileError('Could not read ' + ext.toUpperCase() + '. Try saving as .pdf or .txt.'); });
+
+  // ── TXT / MD / CSV / RTF ─────────────────────────────────────
+  } else if (['txt','md','csv','rtf','text'].indexOf(ext) !== -1) {
     file.text().then(function(t) {
-      cvTextContent = t.trim();
-      document.getElementById('analyzeBtn').disabled = false;
-      document.getElementById('cvStatus').textContent = 'Loaded \u2014 ' + file.name;
-      document.getElementById('cvStatus').className = 'cv-status ready';
-      setCVOutput('<div class="cv-placeholder"><div style="font-size:.9rem;color:var(--accent);margin-bottom:.5rem">\u2713 File loaded</div><div>Click \u201cAnalyze with AI\u201d to get insights.</div></div>');
+      var text = ext === 'rtf'
+        ? t.replace(/\{\\[^}]*\}|\\[a-z]+\d*\s?|[{}]/g, ' ').replace(/\s+/g, ' ').trim()
+        : t.trim();
+      cvFileReady(text, ext.toUpperCase() + ' loaded \u2014 ' + file.name);
+    }).catch(function() { cvFileError('Could not read file.'); });
+
+  // ── ODT / ODS / PAGES — try as text ─────────────────────────
+  } else if (['odt','ods','pages'].indexOf(ext) !== -1) {
+    // These are ZIP-based XML formats; attempt mammoth first, fall back to raw text
+    file.arrayBuffer().then(function(buf) {
+      return mammoth.extractRawText({ arrayBuffer: buf });
+    }).then(function(result) {
+      var text = result.value.trim();
+      if (!text) throw new Error('empty');
+      cvFileReady(text, ext.toUpperCase() + ' extracted \u2014 ' + file.name);
+    }).catch(function() {
+      // Fallback: read raw bytes and grab printable ASCII
+      file.text().then(function(t) {
+        var text = t.replace(/[^\x20-\x7E\n\r\t]/g, ' ').replace(/\s{3,}/g, '\n').trim();
+        if (text.length > 100) { cvFileReady(text, ext.toUpperCase() + ' (partial) \u2014 ' + file.name); }
+        else { cvFileError('Could not extract text from ' + ext.toUpperCase() + '. Try saving as .pdf or .txt.'); }
+      });
     });
 
+  // ── Anything else — best-effort text read ────────────────────
   } else {
-    // DOCX / DOC — can't extract client-side, tell user to paste text
-    cvTextContent = '';
-    document.getElementById('cvStatus').textContent = 'Use .txt or .pdf for analysis';
-    document.getElementById('cvStatus').className = 'cv-status';
-    setCVOutput('<div class="cv-placeholder"><div style="margin-bottom:.8rem;font-size:.9rem;color:var(--accent3)">\u26A0\uFE0F ' + ext.toUpperCase() + ' files cannot be read in the browser.</div><div style="font-size:.86rem;color:var(--muted)">Please save your CV as <strong style="color:var(--text)">.pdf</strong> or <strong style="color:var(--text)">.txt</strong> and re-upload.</div></div>');
+    file.text().then(function(t) {
+      var text = t.replace(/[^\x20-\x7E\n\r\t]/g, ' ').replace(/\s{3,}/g, '\n').trim();
+      if (text.length > 80) {
+        cvFileReady(text, file.name + ' loaded');
+      } else {
+        cvFileError('Could not extract readable text from this file. Try .pdf, .docx, or .txt.');
+      }
+    }).catch(function() { cvFileError('Could not read file. Try .pdf, .docx, or .txt.'); });
   }
 }
 
