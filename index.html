@@ -440,6 +440,37 @@ footer strong{color:var(--accent);font-weight:700}
   .reasons-grid{grid-template-columns:1fr}
   .hero-content{padding:1.8rem 1.2rem;border-radius:24px}
 }
+
+/* ─── CV INSIGHTS PANEL ─────────────────────────────────────── */
+.cv-insights-wrap{
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.46);
+  border-radius:var(--r2);padding:2rem;
+  box-shadow:var(--glass-shadow)}
+.cv-insights-header{display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;margin-bottom:1.6rem;padding-bottom:1rem;
+  border-bottom:1px solid rgba(255,255,255,0.35)}
+.cv-insights-title{font-size:1.1rem;font-weight:800;color:var(--text)}
+.cv-insights-meta{font-size:.78rem;color:var(--muted);font-family:var(--mono)}
+.cv-insights-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:700px){.cv-insights-grid{grid-template-columns:1fr}}
+.cv-insight-block h4{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.8rem}
+.cv-skill-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.cv-skill-tag{font-size:.76rem;padding:.3rem .7rem;border-radius:8px;font-family:var(--mono);font-weight:600;
+  background:rgba(200,80,14,0.10);border:1px solid rgba(200,80,14,0.22);color:var(--accent)}
+.cv-highlight-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:.55rem}
+.cv-highlight-list li{font-size:.86rem;color:var(--muted);line-height:1.55;padding-left:1.1rem;position:relative}
+.cv-highlight-list li::before{content:'✦';position:absolute;left:0;color:var(--accent3);font-size:.65rem;top:.15rem}
+.cv-full-analysis{margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,0.35)}
+.cv-full-analysis h4{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.8rem}
+.cv-analysis-body{font-size:.88rem;line-height:1.8;color:var(--muted)}
+.cv-analysis-body h3{color:var(--accent);margin:.8rem 0 .4rem;font-size:.9rem;font-weight:700}
+.cv-analysis-body strong{color:var(--text)}
+.cv-analysis-body li{margin-left:1.2rem;margin-bottom:.3rem}
 </style>
 </head>
 <body>
@@ -794,7 +825,25 @@ footer strong{color:var(--accent);font-weight:700}
           <button class="btn-analyze" id="analyzeBtn" onclick="analyzeCV()" disabled>Analyse</button>
           <button class="btn-download" id="downloadBtn" onclick="downloadCV()" disabled>Download Resume</button>
         </div>
-        <div style="margin-top:1.5rem;padding:1.2rem;background:rgba(123,97,255,.07);border:1px solid rgba(123,97,255,.2);border-radius:var(--r)">
+        <!-- CV STORE BANNER (shown when a CV is saved in localStorage) -->
+        <div id="cvStoreBanner" style="display:none;margin-top:1.2rem;padding:.9rem 1.1rem;
+          background:rgba(200,80,14,0.10);border:1px solid rgba(200,80,14,0.30);border-radius:var(--r);
+          backdrop-filter:blur(12px);align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap">
+          <div>
+            <div style="font-size:.78rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em">Stored CV</div>
+            <div style="font-size:.84rem;color:var(--text);margin-top:.2rem">
+              <span class="cv-store-filename" style="font-family:var(--mono)"></span>
+              <span style="color:var(--muted);margin-left:.5rem">&middot; saved <span class="cv-store-date"></span></span>
+            </div>
+          </div>
+          <button onclick="clearCVStore()" style="padding:.4rem .9rem;border-radius:99px;border:1.5px solid rgba(200,80,14,0.40);
+            background:transparent;color:var(--accent);font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:.2s"
+            onmouseover="this.style.background='rgba(200,80,14,0.10)'" onmouseout="this.style.background='transparent'">
+            &times; Clear Stored CV
+          </button>
+        </div>
+
+        <div style="margin-top:1.5rem;padding:1.2rem;background:rgba(200,80,14,0.07);border:1px solid rgba(200,80,14,0.18);border-radius:var(--r)">
           <div style="font-size:.8rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">What the AI analyzes</div>
           <ul style="font-size:.84rem;color:var(--muted);padding-left:1.1rem;line-height:2">
             <li>Key measurable achievements with quantified impact</li>
@@ -818,6 +867,9 @@ footer strong{color:var(--accent);font-weight:700}
         </div>
       </div>
     </div>
+
+    <!-- CV INSIGHTS PANEL — rendered from stored CV data -->
+    <div id="cvInsightsPanel" style="display:none;margin-top:2.5rem" class="reveal"></div>
   </div>
 </section>
 
@@ -1265,6 +1317,113 @@ function handleCVFile(file) {
   setCVOutput('<div class="cv-placeholder"><div style="font-size:.9rem;color:var(--accent3);margin-bottom:.5rem">\u2713 File loaded successfully</div><div>Click "Analyze with AI" to extract insights.</div></div>');
 }
 
+// ── CV STORE (localStorage database) ─────────────────────────
+var CV_STORE_KEY = 'portfolio_cv_store';
+
+function saveCVStore(filename, text, analysis) {
+  var record = { filename: filename, text: text.slice(0, 8000), analysis: analysis, savedAt: new Date().toISOString() };
+  try { localStorage.setItem(CV_STORE_KEY, JSON.stringify(record)); } catch(e) {}
+}
+
+function loadCVStore() {
+  try { return JSON.parse(localStorage.getItem(CV_STORE_KEY) || 'null'); } catch(e) { return null; }
+}
+
+function clearCVStore() {
+  localStorage.removeItem(CV_STORE_KEY);
+  document.getElementById('cvStoreBanner').style.display = 'none';
+  document.getElementById('cvInsightsPanel').style.display = 'none';
+  document.getElementById('cvInsightsPanel').classList.remove('visible');
+  setCVOutput('<div class="cv-placeholder"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><div>Upload a CV to see AI-powered analysis</div></div>');
+  document.getElementById('cvStatus').textContent = 'Awaiting upload';
+  document.getElementById('cvStatus').className = 'cv-status';
+}
+
+function formatAnalysisHTML(raw) {
+  return raw
+    .replace(/#{1,3}\s?(.+)/g, '<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^[-\u2022]\s(.+)/gm, '<li>$1</li>')
+    .replace(/\n\n/g, '<br>');
+}
+
+function extractSkillTags(analysis) {
+  // Common ML/tech keywords to surface as tags
+  var patterns = [
+    'Python','PyTorch','TensorFlow','scikit-learn','Keras','Hugging Face',
+    'LangChain','RAG','FastAPI','Docker','Kubernetes','MLflow','Airflow',
+    'AWS','GCP','Azure','SQL','PostgreSQL','MongoDB','Spark','dbt','Pandas',
+    'NumPy','OpenCV','YOLO','LLM','NLP','Computer Vision','Deep Learning',
+    'Machine Learning','Data Engineering','MLOps','Transformers','XGBoost',
+    'LightGBM','React','Node.js','TypeScript','JavaScript','Go','Rust'
+  ];
+  var found = [];
+  var upper = analysis.toUpperCase();
+  patterns.forEach(function(p) {
+    if (upper.indexOf(p.toUpperCase()) !== -1 && found.indexOf(p) === -1) found.push(p);
+  });
+  return found.slice(0, 18);
+}
+
+function extractHighlights(analysis) {
+  var lines = analysis.split('\n');
+  var items = [];
+  lines.forEach(function(line) {
+    var m = line.match(/^[-\u2022]\s+(.+)/);
+    if (m && m[1].length > 20) items.push(m[1].trim());
+  });
+  return items.slice(0, 7);
+}
+
+function renderCVInsights(filename, analysis, savedAt) {
+  var panel = document.getElementById('cvInsightsPanel');
+  var tags = extractSkillTags(analysis);
+  var highlights = extractHighlights(analysis);
+  var date = savedAt ? new Date(savedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+
+  panel.innerHTML =
+    '<div class="cv-insights-wrap">' +
+      '<div class="cv-insights-header">' +
+        '<div>' +
+          '<div class="cv-insights-title">\uD83D\uDCC4 CV-Powered Profile</div>' +
+          '<div class="cv-insights-meta">' + (filename || '') + (date ? ' \u00b7 saved ' + date : '') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cv-insights-grid">' +
+        (tags.length ? '<div class="cv-insight-block"><h4>Detected Skills &amp; Tools</h4><div class="cv-skill-tags">' +
+          tags.map(function(t) { return '<span class="cv-skill-tag">' + t + '</span>'; }).join('') +
+        '</div></div>' : '') +
+        (highlights.length ? '<div class="cv-insight-block"><h4>Key Highlights</h4><ul class="cv-highlight-list">' +
+          highlights.map(function(h) { return '<li>' + h + '</li>'; }).join('') +
+        '</ul></div>' : '') +
+      '</div>' +
+      '<div class="cv-full-analysis"><h4>Full AI Analysis</h4>' +
+        '<div class="cv-analysis-body">' + formatAnalysisHTML(analysis) + '</div>' +
+      '</div>' +
+    '</div>';
+
+  panel.style.display = 'block';
+  setTimeout(function() { panel.classList.add('visible'); }, 60);
+}
+
+// Auto-restore from localStorage on page load
+(function initCVStore() {
+  var stored = loadCVStore();
+  if (!stored) return;
+  var banner = document.getElementById('cvStoreBanner');
+  banner.style.display = 'flex';
+  banner.querySelector('.cv-store-filename').textContent = stored.filename;
+  banner.querySelector('.cv-store-date').textContent = new Date(stored.savedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  cvTextContent = stored.text;
+  document.getElementById('cvFileName').textContent = '\uD83D\uDCCE ' + stored.filename;
+  document.getElementById('analyzeBtn').disabled = false;
+  document.getElementById('downloadBtn').disabled = false;
+  document.getElementById('cvStatus').textContent = 'Restored from storage \u00b7 ' + stored.filename;
+  document.getElementById('cvStatus').className = 'cv-status ready';
+  setCVOutput('<div class="cv-output has-content" style="padding:.4rem 0">' + formatAnalysisHTML(stored.analysis) + '</div>');
+  renderCVInsights(stored.filename, stored.analysis, stored.savedAt);
+})();
+
 function analyzeCV() {
   if (!cvTextContent) return;
   var btn = document.getElementById('analyzeBtn');
@@ -1281,21 +1440,26 @@ function analyzeCV() {
   })
     .then(function(r) { if(!r.ok) throw new Error(); return r.json(); })
     .then(function(data) {
-      var html = data.analysis
-        .replace(/#{1,3}\s?(.+)/g,'<h3 style="color:var(--accent);margin:.8rem 0 .4rem;font-size:.9rem">$1</h3>')
-        .replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--text)">$1</strong>')
-        .replace(/^[-\u2022]\s(.+)/gm,'<li>$1</li>')
-        .replace(/\n\n/g,'</p><p style="margin-top:.8rem">');
-      setCVOutput('<div class="cv-output has-content" style="padding:.4rem 0">' + html + '</div>');
-      status.textContent = 'Analysis complete';
+      setCVOutput('<div class="cv-output has-content" style="padding:.4rem 0">' + formatAnalysisHTML(data.analysis) + '</div>');
+      status.textContent = 'Analysis complete \u2014 saved to storage';
       status.className = 'cv-status ready';
+      // Save to localStorage database
+      var fname = cvFileObj ? cvFileObj.name : 'resume.txt';
+      saveCVStore(fname, cvTextContent, data.analysis);
+      // Show banner
+      var banner = document.getElementById('cvStoreBanner');
+      banner.style.display = 'flex';
+      banner.querySelector('.cv-store-filename').textContent = fname;
+      banner.querySelector('.cv-store-date').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+      // Render skills showcase
+      renderCVInsights(fname, data.analysis, new Date().toISOString());
     })
     .catch(function() {
-      setCVOutput('<div class="cv-placeholder" style="color:#ff8080">Analysis failed. Please try again &mdash; if the issue persists, contact stevenk710@gmail.com.</div>');
+      setCVOutput('<div class="cv-placeholder" style="color:#cc4444">Analysis failed. Please try again &mdash; if the issue persists, contact stevenk710@gmail.com.</div>');
       status.textContent = 'Error'; status.className = 'cv-status';
     })
     .finally(function() {
-      btn.disabled = false; btn.textContent = '\ud83d\udd0d Analyze with AI';
+      btn.disabled = false; btn.textContent = '\uD83D\uDD0D Analyze with AI';
     });
 }
 

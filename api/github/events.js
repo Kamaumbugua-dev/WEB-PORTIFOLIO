@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const EVENT_META = {
-  PushEvent:           { label: 'COMMIT',       color: '#00d4ff' },
+  PushEvent:           { label: 'COMMIT',       color: '#1a1a1a' },
   CreateEvent:         { label: 'CREATE',        color: '#00ffb3' },
   DeleteEvent:         { label: 'DELETE',        color: '#ff6b6b' },
   WatchEvent:          { label: 'STAR',          color: '#f0c040' },
