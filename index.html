@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Steven Kamau Mbugua — ML & Deep Learning Engineer | Axon Lattice Labs</title>
+<meta name="description" content="Steven Kamau Mbugua — Machine Learning & Deep Learning Engineer and Founder of Axon Lattice Labs. Precision-engineered AI systems for production. Available for global opportunities."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+/* ─── RESET & TOKENS ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#C9B9A8;
+  --surface:rgba(255,255,255,0.22);
+  --surface2:rgba(255,255,255,0.16);
+  --border:rgba(255,255,255,0.42);
+  --border-glow:rgba(200,80,20,0.45);
+  --text:#1E120A;
+  --muted:#7A6050;
+  --accent:#C8500E;
+  --accent2:#9A3A08;
+  --accent3:#E07820;
+  --grad:linear-gradient(135deg,#C8500E,#E89030);
+  --grad2:linear-gradient(135deg,#9A3A08,#E07820);
+  --glow:0 8px 32px rgba(200,80,14,.20);
+  --glow2:0 8px 32px rgba(154,58,8,.20);
+  --glass-bg:rgba(255,255,255,0.18);
+  --glass-border:rgba(255,255,255,0.48);
+  --glass-shadow:0 4px 32px rgba(0,0,0,0.08),inset 0 1.5px 0 rgba(255,255,255,0.60),inset 0 -1px 0 rgba(0,0,0,0.04);
+  --r:16px;
+  --r2:24px;
+  --nav-h:68px;
+  --font:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  background:#C9B9A8;
+  background-image:
+    radial-gradient(ellipse 75% 55% at 12% 18%,rgba(205,105,40,0.32) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 50% at 88% 82%,rgba(185,115,50,0.26) 0%,transparent 52%),
+    radial-gradient(ellipse 45% 40% at 55% 48%,rgba(215,130,60,0.14) 0%,transparent 60%);
+  color:var(--text);font-family:var(--font);overflow-x:hidden;line-height:1.6;min-height:100vh
+}
+::selection{background:rgba(200,80,14,0.22);color:#1E120A}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:99px}
+a{color:var(--accent);text-decoration:none;transition:.2s}
+a:hover{color:var(--accent2)}
+
+/* ─── NAV ───────────────────────────────────────────────────── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);
+  backdrop-filter:blur(28px) saturate(200%);
+  -webkit-backdrop-filter:blur(28px) saturate(200%);
+  background:rgba(195,175,155,0.60);
+  border-bottom:1px solid rgba(255,255,255,0.40);
+  transition:box-shadow .3s}
+#nav.scrolled{box-shadow:0 4px 32px rgba(0,0,0,0.12),inset 0 -1px 0 rgba(255,255,255,0.28)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 1.5rem;height:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:.25rem;list-style:none}
+.nav-links a{padding:.45rem .8rem;border-radius:8px;font-size:.88rem;font-weight:500;color:var(--muted);
+  transition:.2s;white-space:nowrap}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:rgba(255,255,255,0.32)}
+.nav-cta{padding:.5rem 1.1rem!important;background:var(--grad)!important;
+  -webkit-text-fill-color:#fff!important;color:#fff!important;border-radius:99px!important;font-weight:700!important}
+.nav-cta:hover{filter:brightness(1.1)!important;transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem}
+.hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+
+/* ─── HERO ──────────────────────────────────────────────────── */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;
+  justify-content:center;overflow:hidden;padding:calc(var(--nav-h) + 2rem) 1.5rem 4rem}
+#hero-canvas{position:absolute;inset:0;z-index:0;width:100%;height:100%}
+.hero-glow{position:absolute;width:800px;height:800px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,80,20,0.18) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1}
+/* ── HERO GLASS CARD ── */
+.hero-content{position:relative;z-index:2;text-align:center;max-width:860px;
+  background:rgba(255,255,255,0.24);
+  backdrop-filter:blur(36px) saturate(210%);
+  -webkit-backdrop-filter:blur(36px) saturate(210%);
+  border:1px solid rgba(255,255,255,0.58);
+  border-radius:32px;
+  padding:3rem 3.5rem;
+  box-shadow:
+    0 8px 52px rgba(0,0,0,0.10),
+    0 2px 8px rgba(0,0,0,0.06),
+    inset 0 1.5px 0 rgba(255,255,255,0.72),
+    inset 0 -1px 0 rgba(0,0,0,0.04),
+    inset 1px 0 0 rgba(255,255,255,0.32),
+    inset -1px 0 0 rgba(255,255,255,0.32)}
+.hero-badge{display:inline-flex;align-items:center;gap:.7rem;padding:.6rem 1.2rem;
+  border:1px solid rgba(200,80,14,0.42);border-radius:99px;
+  background:rgba(200,80,14,0.10);font-size:.85rem;font-weight:700;color:var(--accent);
+  margin-bottom:1.8rem;animation:fadeUp .8s ease both;
+  box-shadow:0 0 20px rgba(200,80,14,0.10),inset 0 1px 0 rgba(255,255,255,0.35)}
+.gh-dot-wrap{position:relative;width:14px;height:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.gh-dot{width:12px;height:12px;border-radius:50%;background:var(--accent3);
+  box-shadow:0 0 0 2px rgba(224,120,32,0.32),0 0 12px var(--accent3);
+  animation:dotpulse 1.6s ease-in-out infinite;position:relative;z-index:1}
+.gh-dot-ring{position:absolute;inset:-4px;border-radius:50%;
+  border:1.5px solid rgba(224,120,32,0.50);animation:ripple 1.6s ease-out infinite}
+.gh-dot.inactive{background:#B09880;box-shadow:none;animation:none}
+.gh-dot.inactive + .gh-dot-ring{display:none}
+@keyframes dotpulse{0%,100%{transform:scale(.88);opacity:.8}50%{transform:scale(1.15);opacity:1}}
+@keyframes ripple{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.2);opacity:0}}
+.hero-title{font-size:clamp(2.4rem,7vw,5.2rem);font-weight:900;line-height:1.06;
+  letter-spacing:-.04em;margin-bottom:1.2rem;animation:fadeUp .9s .1s ease both;color:var(--text)}
+.hero-title .line1{display:block}
+.hero-title .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block;min-height:1.2em}
+.hero-title .line3{display:block;font-size:.62em;font-weight:400;color:var(--muted);
+  letter-spacing:-.01em;margin-top:.4rem}
+.hero-sub{font-size:clamp(1rem,2.5vw,1.22rem);color:var(--muted);max-width:680px;
+  margin:0 auto 2.4rem;animation:fadeUp .9s .2s ease both;line-height:1.7}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center;
+  animation:fadeUp .9s .35s ease both}
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2rem;
+  background:var(--grad);border-radius:99px;font-weight:700;font-size:.95rem;
+  color:#fff;border:none;cursor:pointer;transition:.25s;white-space:nowrap}
+.btn-primary:hover{transform:translateY(-3px);filter:brightness(1.10);
+  box-shadow:0 12px 35px rgba(200,80,14,0.30);color:#fff}
+.btn-outline{display:inline-flex;align-items:center;gap:.5rem;padding:.83rem 2rem;
+  border:1.5px solid rgba(200,80,14,0.32);border-radius:99px;font-weight:600;
+  font-size:.95rem;color:var(--text);
+  background:rgba(255,255,255,0.28);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  cursor:pointer;transition:.25s;white-space:nowrap}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px);
+  box-shadow:0 8px 25px rgba(200,80,14,0.16);background:rgba(255,255,255,0.40)}
+.hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:2rem 3rem;
+  margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.42);
+  animation:fadeUp .9s .5s ease both}
+.stat-item{text-align:center}
+.stat-num{font-size:2rem;font-weight:800;background:var(--grad);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.03em}
+.stat-label{font-size:.8rem;color:var(--muted);font-weight:500;margin-top:.15rem}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── SECTION SHELL ─────────────────────────────────────────── */
+.section{padding:6rem 1.5rem;max-width:1200px;margin:0 auto}
+.section-tag{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:.7rem}
+.section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;
+  line-height:1.15;margin-bottom:1rem;color:var(--text)}
+.section-sub{font-size:1.05rem;color:var(--muted);max-width:620px;line-height:1.7;margin-bottom:2.8rem}
+.reveal{opacity:0;transform:translateY(36px);transition:.75s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:none}
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent);margin:0}
+
+/* ─── GLASS CARD MIXIN (applied per-component below) ─────────── */
+/* background:rgba(255,255,255,0.18); backdrop-filter:blur(24px) saturate(180%);
+   border:1px solid rgba(255,255,255,0.46); box-shadow: var(--glass-shadow) */
+
+/* ─── ABOUT ─────────────────────────────────────────────────── */
+#about,#repos,#cv,#contact{background:transparent!important}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.about-text p{color:var(--muted);line-height:1.9;font-size:1.02rem;margin-bottom:1rem}
+.about-text p strong{color:var(--text)}
+.about-card{
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.48);
+  border-radius:var(--r2);padding:1.8rem;transition:.3s;
+  box-shadow:var(--glass-shadow)}
+.about-card:hover{border-color:var(--border-glow);box-shadow:var(--glow),inset 0 1.5px 0 rgba(255,255,255,0.62)}
+.about-card h4{font-size:.9rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.1rem}
+.timeline{list-style:none;padding:0;position:relative}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.timeline li{padding-left:1.4rem;padding-bottom:1.4rem;position:relative}
+.timeline li::before{content:'';position:absolute;left:-4px;top:6px;width:10px;height:10px;
+  border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.timeline li:last-child{padding-bottom:0}
+.tl-year{font-size:.76rem;font-weight:700;color:var(--accent);letter-spacing:.06em;
+  text-transform:uppercase;margin-bottom:.2rem}
+.tl-title{font-size:.95rem;font-weight:600;color:var(--text)}
+.tl-desc{font-size:.85rem;color:var(--muted);margin-top:.2rem}
+
+/* ─── SKILLS ────────────────────────────────────────────────── */
+#skills{position:relative;overflow:hidden}
+.skills-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 50%,rgba(200,80,14,.07),transparent);pointer-events:none}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.skill-card{
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.46);
+  border-radius:var(--r2);padding:1.6rem;transition:.35s;position:relative;overflow:hidden;cursor:default;
+  box-shadow:var(--glass-shadow)}
+.skill-card::before{content:'';position:absolute;inset:0;background:var(--grad);opacity:0;transition:.35s;z-index:0}
+.skill-card:hover::before{opacity:.04}
+.skill-card:hover{border-color:rgba(255,255,255,0.68);transform:translateY(-4px);box-shadow:var(--glow),inset 0 1.5px 0 rgba(255,255,255,0.70)}
+.skill-card>*{position:relative;z-index:1}
+.skill-icon{font-size:2rem;margin-bottom:.8rem;display:block}
+.skill-name{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.5rem}
+.skill-desc{font-size:.85rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+.skill-bar-wrap{height:4px;background:rgba(0,0,0,0.09);border-radius:99px;overflow:hidden}
+.skill-bar{height:100%;border-radius:99px;background:var(--grad);width:0;transition:width 1.2s cubic-bezier(.16,1,.3,1) .2s}
+.skill-pct{font-size:.76rem;color:var(--accent);font-weight:700;font-family:var(--mono);margin-top:.35rem}
+.tags-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+.tag{font-size:.72rem;padding:.25rem .6rem;border-radius:6px;
+  background:rgba(200,80,14,0.10);border:1px solid rgba(200,80,14,0.22);
+  color:var(--accent);font-family:var(--mono);font-weight:600}
+.tag.p{background:rgba(154,58,8,0.10);border-color:rgba(154,58,8,0.22);color:var(--accent2)}
+.tag.g{background:rgba(224,120,32,0.10);border-color:rgba(224,120,32,0.22);color:var(--accent3)}
+
+/* ─── REPOS ─────────────────────────────────────────────────── */
+.repos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.3rem}
+.repo-card{
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.46);
+  border-radius:var(--r2);padding:1.5rem 1.6rem;display:flex;flex-direction:column;gap:.8rem;
+  transition:.35s;cursor:pointer;position:relative;overflow:hidden;
+  box-shadow:var(--glass-shadow)}
+.repo-card::after{content:'';position:absolute;inset:0;background:var(--grad2);opacity:0;transition:.35s;z-index:0}
+.repo-card:hover::after{opacity:.03}
+.repo-card:hover{border-color:rgba(255,255,255,0.68);transform:translateY(-5px);box-shadow:var(--glow),inset 0 1.5px 0 rgba(255,255,255,0.70)}
+.repo-card>*{position:relative;z-index:1}
+.repo-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem}
+.repo-name{font-size:1rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:.5rem}
+.repo-name svg{width:16px;height:16px;flex-shrink:0;opacity:.5}
+.lang-dot{display:inline-flex;align-items:center;gap:.35rem;font-size:.76rem;color:var(--muted);font-family:var(--mono)}
+.lang-dot::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--c,#B09880);flex-shrink:0}
+.repo-desc{font-size:.88rem;color:var(--muted);line-height:1.65;flex:1}
+.repo-meta{display:flex;align-items:center;gap:1rem;font-size:.78rem;color:var(--muted);font-family:var(--mono)}
+.repo-analysis{font-size:.82rem;color:var(--accent);font-weight:600;margin-top:.3rem;
+  padding:.6rem .9rem;background:rgba(200,80,14,0.07);border:1px solid rgba(200,80,14,0.18);border-radius:10px;line-height:1.55}
+.repo-placeholder{grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)}
+.repos-loading{display:flex;justify-content:center;padding:3rem}
+.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,0.35);border-top-color:var(--accent);
+  border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── WHY HIRE ME ───────────────────────────────────────────── */
+#why{position:relative;overflow:hidden}
+.why-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 70% 60% at 20% 50%,rgba(200,80,14,.07),transparent),
+  radial-gradient(ellipse 60% 50% at 80% 50%,rgba(154,58,8,.06),transparent);pointer-events:none}
+.reasons-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem}
+.reason-card{
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.46);
+  border-radius:var(--r2);padding:1.8rem;transition:.35s;position:relative;
+  box-shadow:var(--glass-shadow)}
+.reason-card:hover{border-color:rgba(255,255,255,0.68);transform:translateY(-4px);box-shadow:var(--glow),inset 0 1.5px 0 rgba(255,255,255,0.70)}
+.reason-num{font-size:3.5rem;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;line-height:1;margin-bottom:.6rem;font-family:var(--mono)}
+.reason-title{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:.6rem}
+.reason-desc{font-size:.88rem;color:var(--muted);line-height:1.7}
+.recruiter-cta{
+  background:rgba(255,255,255,0.22);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.48);
+  border-radius:var(--r2);padding:2.5rem;text-align:center;margin-top:3rem;
+  box-shadow:var(--glass-shadow)}
+.recruiter-cta h3{font-size:1.6rem;font-weight:800;margin-bottom:.8rem;color:var(--text)}
+.recruiter-cta p{color:var(--muted);margin-bottom:1.6rem;max-width:540px;margin-left:auto;margin-right:auto}
+
+/* ─── CV SECTION ────────────────────────────────────────────── */
+.cv-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:2.5rem;align-items:start}
+.cv-upload-zone{border:2px dashed rgba(200,80,14,0.35);border-radius:var(--r2);
+  padding:2.5rem;text-align:center;cursor:pointer;transition:.3s;
+  background:rgba(255,255,255,0.12);position:relative}
+.cv-upload-zone:hover,.cv-upload-zone.dragover{border-color:var(--accent);background:rgba(255,255,255,0.24)}
+.cv-upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2.8rem;margin-bottom:.8rem;display:block}
+.upload-title{font-size:1rem;font-weight:700;color:var(--text);margin-bottom:.4rem}
+.upload-hint{font-size:.83rem;color:var(--muted)}
+.cv-file-name{margin-top:.8rem;font-size:.85rem;color:var(--accent);font-family:var(--mono)}
+.cv-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.4rem}
+.btn-analyze{padding:.78rem 1.6rem;border-radius:99px;background:var(--grad);
+  color:#fff;font-weight:700;font-size:.9rem;border:none;cursor:pointer;transition:.25s;
+  display:flex;align-items:center;gap:.5rem}
+.btn-analyze:hover{transform:translateY(-2px);filter:brightness(1.10)}
+.btn-analyze:disabled{opacity:.5;cursor:not-allowed;transform:none;filter:none}
+.btn-download{padding:.76rem 1.6rem;border-radius:99px;border:1.5px solid var(--accent3);
+  color:var(--accent3);font-weight:700;font-size:.9rem;background:transparent;cursor:pointer;
+  transition:.25s;display:flex;align-items:center;gap:.5rem}
+.btn-download:hover{background:rgba(224,120,32,0.10);transform:translateY(-2px)}
+.btn-download:disabled{opacity:.4;cursor:not-allowed}
+.cv-result{
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.46);
+  border-radius:var(--r2);padding:1.6rem;min-height:340px;position:relative;
+  box-shadow:var(--glass-shadow)}
+.cv-result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;
+  padding-bottom:.8rem;border-bottom:1px solid rgba(255,255,255,0.38)}
+.cv-result-title{font-size:.9rem;font-weight:700;color:var(--text)}
+.cv-status{font-size:.78rem;color:var(--muted);font-family:var(--mono)}
+.cv-status.ready{color:var(--accent3)}
+.cv-status.loading{color:var(--accent);animation:blink 1.2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.cv-output{font-size:.88rem;line-height:1.8;color:var(--muted);white-space:pre-wrap;word-break:break-word;max-height:500px;overflow-y:auto}
+.cv-output.has-content{color:var(--text);white-space:normal}
+.cv-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:260px;color:var(--muted);text-align:center;gap:.8rem}
+.cv-placeholder svg{opacity:.28}
+
+/* ─── FAQ ───────────────────────────────────────────────────── */
+#faq{position:relative;overflow:hidden}
+.faq-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(224,120,32,.06),transparent);pointer-events:none}
+.faq-list{max-width:780px;display:flex;flex-direction:column;gap:.8rem}
+.faq-item{
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.46);
+  border-radius:var(--r);overflow:hidden;transition:.25s;
+  box-shadow:0 2px 12px rgba(0,0,0,0.05),inset 0 1.5px 0 rgba(255,255,255,0.58)}
+.faq-item:hover{border-color:rgba(255,255,255,0.66)}
+.faq-q{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.5rem;cursor:pointer;
+  font-weight:600;font-size:.97rem;gap:1rem;user-select:none;color:var(--text)}
+.faq-q:hover{color:var(--accent)}
+.faq-icon{flex-shrink:0;width:22px;height:22px;background:rgba(255,255,255,0.32);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:.3s}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:rgba(200,80,14,0.15);color:var(--accent)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1),padding .3s}
+.faq-item.open .faq-a{max-height:400px;padding:.2rem 1.5rem 1.4rem}
+.faq-a p{color:var(--muted);font-size:.9rem;line-height:1.8}
+
+/* ─── CONTACT ───────────────────────────────────────────────── */
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:3rem;align-items:start}
+.contact-info h3{font-size:1.5rem;font-weight:800;margin-bottom:1rem;color:var(--text)}
+.contact-info p{color:var(--muted);line-height:1.8;margin-bottom:1.6rem;font-size:.95rem}
+.contact-links{display:flex;flex-direction:column;gap:.9rem}
+.contact-link{display:flex;align-items:center;gap:.8rem;padding:1rem 1.2rem;
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.46);
+  border-radius:var(--r);
+  font-size:.9rem;font-weight:500;color:var(--text);transition:.25s;
+  box-shadow:0 2px 12px rgba(0,0,0,0.05),inset 0 1.5px 0 rgba(255,255,255,0.58)}
+.contact-link:hover{border-color:var(--border-glow);color:var(--accent);transform:translateX(4px)}
+.contact-link-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  background:rgba(200,80,14,0.12);font-size:1.1rem;flex-shrink:0}
+.contact-form{
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.46);
+  border-radius:var(--r2);padding:2rem;
+  box-shadow:var(--glass-shadow)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem}
+.form-group label{font-size:.82rem;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.form-group input,.form-group textarea,.form-group select{
+  background:rgba(255,255,255,0.38);border:1.5px solid rgba(255,255,255,0.52);border-radius:10px;
+  padding:.8rem 1rem;font-size:.92rem;font-family:var(--font);color:var(--text);
+  transition:.25s;resize:vertical}
+.form-group select option{background:#D4C4B0;color:var(--text)}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--accent);
+  background:rgba(255,255,255,0.50);box-shadow:0 0 0 3px rgba(200,80,14,0.12)}
+.form-group textarea{min-height:130px}
+.form-submit{width:100%;padding:.9rem;border-radius:99px;background:var(--grad);
+  color:#fff;font-weight:700;font-size:.95rem;border:none;cursor:pointer;transition:.25s;margin-top:.5rem}
+.form-submit:hover{filter:brightness(1.10);transform:translateY(-2px);box-shadow:0 10px 30px rgba(200,80,14,0.28)}
+.form-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.form-msg{margin-top:.8rem;padding:.7rem 1rem;border-radius:10px;font-size:.85rem;font-weight:600;display:none}
+.form-msg.success{display:block;background:rgba(200,80,14,0.10);border:1px solid rgba(200,80,14,0.30);color:var(--accent)}
+.form-msg.error{display:block;background:rgba(220,60,60,.10);border:1px solid rgba(220,60,60,.30);color:#bb3333}
+
+/* ─── FOOTER ────────────────────────────────────────────────── */
+footer{border-top:1px solid rgba(255,255,255,0.42);padding:2.5rem 1.5rem;text-align:center;
+  color:var(--muted);font-size:.85rem;
+  background:rgba(255,255,255,0.14);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+footer strong{color:var(--accent);font-weight:700}
+.footer-links{display:flex;justify-content:center;gap:1.5rem;margin-top:.8rem;flex-wrap:wrap}
+.footer-links a{color:var(--muted);font-size:.82rem;transition:.2s}
+.footer-links a:hover{color:var(--accent)}
+
+/* ─── GITHUB ACTIVITY ───────────────────────────────────────── */
+#activity{position:relative;overflow:hidden}
+.activity-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 50%,rgba(200,80,14,.06),transparent);pointer-events:none}
+.activity-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.4rem}
+.activity-live{display:inline-flex;align-items:center;gap:.6rem;padding:.45rem .9rem;
+  border:1px solid rgba(200,80,14,0.40);border-radius:99px;
+  background:rgba(200,80,14,0.08);
+  font-size:.78rem;font-weight:700;color:var(--accent);letter-spacing:.04em}
+.activity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1rem}
+.event-tile{
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.46);
+  border-radius:var(--r);padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:.55rem;
+  transition:.3s;position:relative;overflow:hidden;border-left-width:3px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.06),inset 0 1.5px 0 rgba(255,255,255,0.58)}
+.event-tile:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,0.12),inset 0 1.5px 0 rgba(255,255,255,0.58)}
+.event-tile-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.event-label{font-size:.68rem;font-weight:800;letter-spacing:.1em;padding:.2rem .55rem;
+  border-radius:4px;background:rgba(255,255,255,0.32);color:var(--c,var(--muted))}
+.event-dot-wrap{position:relative;width:10px;height:10px;flex-shrink:0}
+.event-dot{width:10px;height:10px;border-radius:50%;background:var(--accent3);
+  box-shadow:0 0 6px var(--accent3),0 0 14px rgba(224,120,32,0.5);
+  animation:dotpulse 1.6s ease-in-out infinite}
+.event-dot.stale{background:#C0A888;box-shadow:none;animation:none}
+.event-dot-ring{position:absolute;inset:-3px;border-radius:50%;
+  border:1px solid rgba(224,120,32,0.50);animation:ripple 1.6s ease-out infinite}
+.event-repo{font-size:.82rem;font-weight:700;color:var(--accent);font-family:var(--mono);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none}
+.event-repo:hover{color:var(--accent2)}
+.event-summary{font-size:.85rem;color:var(--text);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.event-detail{font-size:.76rem;color:var(--muted);font-family:var(--mono)}
+.event-time{font-size:.73rem;color:var(--muted);font-family:var(--mono);margin-top:.2rem}
+.activity-empty{grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);font-size:.9rem}
+
+/* ─── RESPONSIVE ────────────────────────────────────────────── */
+@media(max-width:900px){
+  .about-grid,.cv-layout,.contact-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .hero-content{padding:2rem 1.8rem}
+  .nav-links{display:none;position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;
+    background:rgba(195,175,155,0.97);flex-direction:column;align-items:center;justify-content:center;
+    gap:1.5rem;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+  .nav-links.open{display:flex}
+  .nav-links li{width:100%;text-align:center}
+  .nav-links a{display:block;padding:.8rem;font-size:1.1rem}
+  .hamburger{display:flex}
+}
+@media(max-width:600px){
+  .hero-stats{gap:1.5rem 2rem}
+  .repos-grid{grid-template-columns:1fr}
+  .skills-grid{grid-template-columns:1fr}
+  .reasons-grid{grid-template-columns:1fr}
+  .hero-content{padding:1.8rem 1.2rem;border-radius:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="logo">Steven Kamau Mbugua &middot; Axon Lattice Labs</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#repos">Projects</a></li>
+      <li><a href="#activity">Activity</a></li>
+      <li><a href="#why">Why Me</a></li>
+      <li><a href="#cv">Resume</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="gh-dot-wrap">
+        <span class="gh-dot" id="ghDot"></span>
+        <span class="gh-dot-ring" id="ghRing"></span>
+      </span>
+      <span id="ghStatus">Checking GitHub activity&hellip;</span>
+    </div>
+    <h1 class="hero-title">
+      <span class="line1">Building Intelligence.</span>
+      <span class="grad-text" id="typed-text"></span>
+      <span class="line3">Machine Learning &middot; Deep Learning &middot; Data Analytics</span>
+    </h1>
+    <p class="hero-sub">
+      <strong style="color:var(--text)">Steven Kamau Mbugua</strong> &mdash; Machine Learning &amp; Deep Learning Engineer, Founder of <strong style="color:var(--accent)">Axon Lattice Labs</strong>.
+      I design and ship production AI systems with precision &mdash; from neural architecture research through to inference infrastructure.
+      Every system is engineered for reliability, performance, and demonstrable business impact.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="smoothScroll('repos')">View Work</button>
+      <button class="btn-outline" onclick="smoothScroll('cv')">Download Resume</button>
+      <button class="btn-outline" onclick="smoothScroll('contact')">Get in Touch</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" data-count="5" data-suffix="+">0</div>
+        <div class="stat-label">Years ML Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="20" data-suffix="+">0</div>
+        <div class="stat-label">Models Shipped to Production</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="15" data-suffix="+">0</div>
+        <div class="stat-label">GitHub Repositories</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="40" data-suffix="%">0</div>
+        <div class="stat-label">Avg Accuracy Lift Delivered</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about" style="background:linear-gradient(180deg,var(--bg) 0%,var(--surface) 50%,var(--bg) 100%)">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-tag">About Me</div>
+      <h2 class="section-title">Engineering Intelligence.<br>Deploying Impact.</h2>
+      <p class="section-sub">Steven Kamau Mbugua &mdash; ML &amp; Deep Learning Engineer and Founder of Axon Lattice Labs &mdash; operating at the intersection of machine intelligence and production systems engineering.</p>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>My work covers the complete ML lifecycle &mdash; from data architecture and feature engineering through neural network design, hyperparameter optimisation, model compression, and production deployment. <strong>Every system is built to last, not just to demonstrate.</strong></p>
+        <p>I operate with equal fluency across research and engineering. The models I develop are designed for production from the first line of code &mdash; versioned, monitored, and instrumented to remain performant under real-world conditions and real data drift.</p>
+        <p>Every engagement is anchored to a <strong>business outcome</strong>. Model accuracy is a means to an end &mdash; that end being demonstrable improvements in conversion, operational efficiency, cost reduction, or user experience at scale.</p>
+        <p>Across classification, regression, natural language processing, computer vision, time-series forecasting, and recommendation systems, my work has served <strong>production workloads across multiple industries</strong> &mdash; each time with rigour, ownership, and measurable results.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1.2rem">
+        <div class="about-card reveal">
+          <h4>Journey</h4>
+          <ul class="timeline">
+            <li>
+              <div class="tl-year">2020</div>
+              <div class="tl-title">Started with ML fundamentals</div>
+              <div class="tl-desc">scikit-learn, regression, classification, data pipelines</div>
+            </li>
+            <li>
+              <div class="tl-year">2021</div>
+              <div class="tl-title">Deep Learning specialization</div>
+              <div class="tl-desc">CNNs, RNNs, PyTorch, computer vision projects</div>
+            </li>
+            <li>
+              <div class="tl-year">2022</div>
+              <div class="tl-title">First production ML system</div>
+              <div class="tl-desc">End-to-end model deployment with FastAPI + Docker</div>
+            </li>
+            <li>
+              <div class="tl-year">2023</div>
+              <div class="tl-title">NLP &amp; LLM Engineering</div>
+              <div class="tl-desc">Transformers, fine-tuning, RAG systems, prompt engineering</div>
+            </li>
+            <li>
+              <div class="tl-year">2024&ndash;25</div>
+              <div class="tl-title">Senior ML Engineering</div>
+              <div class="tl-desc">MLOps, multi-model architectures, open-source contributions</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills" style="position:relative;overflow:hidden">
+  <div class="skills-bg"></div>
+  <div class="section">
+    <div class="reveal">
+      <div class="section-tag">Technical Skills</div>
+      <h2 class="section-title">A Precision-Engineered<br>Skill Set</h2>
+      <p class="section-sub">From tensor mathematics to distributed inference infrastructure &mdash; command of the complete ML engineering stack, built through years of production work.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-name">Deep Learning</div>
+        <div class="skill-desc">PyTorch, TensorFlow, Keras. CNNs, RNNs, Transformers, diffusion models, GANs. Neural architecture search and model compression (pruning, quantization, distillation).</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-pct="94"></div></div>
+        <div class="skill-pct">94%</div>
+        <div class="tags-row">
+          <span class="tag">PyTorch</span><span class="tag">TensorFlow</span><span class="tag p">Transformers</span><span class="tag g">CUDA</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-name">Machine Learning</div>
+        <div class="skill-desc">scikit-learn, XGBoost, LightGBM. Classification, regression, clustering, anomaly detection. Feature engineering, cross-validation, hyperparameter optimization with Optuna and Ray Tune.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-pct="96"></div></div>
+        <div class="skill-pct">96%</div>
+        <div class="tags-row">
+          <span class="tag">scikit-learn</span><span class="tag">XGBoost</span><span class="tag p">Optuna</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-name">NLP &amp; LLMs</div>
+        <div class="skill-desc">Hugging Face ecosystem, BERT/GPT/LLaMA fine-tuning, RAG architectures, embedding stores, prompt engineering, LangChain, semantic search, text classification at scale.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-pct="90"></div></div>
+        <div class="skill-pct">90%</div>
+        <div class="tags-row">
+          <span class="tag">HuggingFace</span><span class="tag p">LangChain</span><span class="tag g">RAG</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-name">Data Analytics</div>
+        <div class="skill-desc">Pandas, NumPy, Polars, dbt, BigQuery, Snowflake. Statistical analysis, A/B testing, cohort analysis, time-series forecasting, business intelligence dashboards.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-pct="92"></div></div>
+        <div class="skill-pct">92%</div>
+        <div class="tags-row">
+          <span class="tag">Pandas</span><span class="tag">BigQuery</span><span class="tag p">Streamlit</span><span class="tag g">dbt</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-name">MLOps &amp; Deployment</div>
+        <div class="skill-desc">FastAPI, Docker, Kubernetes, MLflow, Weights &amp; Biases, Airflow, CI/CD pipelines. Model serving at scale with monitoring, drift detection, and automated retraining loops.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-pct="88"></div></div>
+        <div class="skill-pct">88%</div>
+        <div class="tags-row">
+          <span class="tag">Docker</span><span class="tag">Kubernetes</span><span class="tag p">MLflow</span><span class="tag g">Airflow</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-name">Cloud &amp; Infrastructure</div>
+        <div class="skill-desc">AWS SageMaker, GCP Vertex AI, Azure ML. Terraform for IaC, S3/GCS data lakes, Lambda/Cloud Functions, GPU cluster management, cost optimization strategies.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-pct="85"></div></div>
+        <div class="skill-pct">85%</div>
+        <div class="tags-row">
+          <span class="tag">AWS</span><span class="tag">GCP</span><span class="tag p">Terraform</span><span class="tag g">SageMaker</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-name">Computer Vision</div>
+        <div class="skill-desc">Object detection (YOLO, DETR), image segmentation, face recognition, OCR, video analytics. OpenCV, PIL, torchvision. Custom dataset pipelines and augmentation strategies.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-pct="87"></div></div>
+        <div class="skill-pct">87%</div>
+        <div class="tags-row">
+          <span class="tag">YOLO</span><span class="tag">OpenCV</span><span class="tag p">torchvision</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-name">Python Engineering</div>
+        <div class="skill-desc">Production-grade Python. Clean architecture, SOLID principles, async programming, type hints, testing (pytest, hypothesis), profiling, and optimization for ML workloads.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-pct="95"></div></div>
+        <div class="skill-pct">95%</div>
+        <div class="tags-row">
+          <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag p">pytest</span><span class="tag g">asyncio</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- REPOS -->
+<section id="repos" style="background:linear-gradient(180deg,var(--bg),var(--surface) 50%,var(--bg))">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-tag">GitHub Projects</div>
+      <h2 class="section-title">Work That<br>Speaks for Itself</h2>
+      <p class="section-sub">Live-fetched from GitHub. Each repository represents a system built to solve a real problem, documented to production standards. <span id="ghUser" style="color:var(--accent);font-family:var(--mono);font-size:.9em"></span></p>
+    </div>
+    <div id="reposGrid" class="repos-grid">
+      <div class="repos-loading"><div class="spinner"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:2rem" class="reveal">
+      <a id="ghProfileLink" href="#" target="_blank" rel="noreferrer" class="btn-outline" style="display:inline-flex;align-items:center;gap:.5rem">
+        View All Repositories on GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- GITHUB ACTIVITY -->
+<section id="activity">
+  <div class="activity-bg"></div>
+  <div class="section">
+    <div class="reveal">
+      <div class="activity-header">
+        <div>
+          <div class="section-tag">GitHub Activity</div>
+          <h2 class="section-title" style="margin-bottom:.4rem">Live Coding Activity</h2>
+          <p class="section-sub" style="margin-bottom:0">Every commit, project creation, and contribution &mdash; fetched in real time from GitHub. The green dot marks events from the last 24 hours.</p>
+        </div>
+        <div class="activity-live">
+          <span class="gh-dot-wrap" style="width:10px;height:10px">
+            <span class="gh-dot" style="width:10px;height:10px"></span>
+            <span class="gh-dot-ring"></span>
+          </span>
+          LIVE
+        </div>
+      </div>
+    </div>
+    <div id="activityGrid" class="activity-grid reveal">
+      <div class="repos-loading"><div class="spinner"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:2rem" class="reveal">
+      <a id="ghActivityLink" href="#" target="_blank" rel="noreferrer" class="btn-outline" style="display:inline-flex;align-items:center;gap:.5rem">
+        View Full Activity on GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHY HIRE ME -->
+<section id="why" style="position:relative;overflow:hidden">
+  <div class="why-bg"></div>
+  <div class="section">
+    <div class="reveal">
+      <div class="section-tag">Why Hire Me</div>
+      <h2 class="section-title">The Case for<br>Steven Kamau Mbugua</h2>
+      <p class="section-sub">Not a list of aspirations. Concrete, differentiated capabilities &mdash; each one backed by shipped systems, deployed models, and outcomes that appear in business reports.</p>
+    </div>
+    <div class="reasons-grid">
+      <div class="reason-card reveal">
+        <div class="reason-num">01</div>
+        <div class="reason-title">Systems Built for Production</div>
+        <div class="reason-desc">Deployment is not an afterthought in my process &mdash; it is the starting point. Every model is architected with versioning, rollback procedures, performance SLAs, and A/B testing frameworks from day one. The result is a system that ships, holds, and earns its place in production.</div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-num">02</div>
+        <div class="reason-title">Deep Learning Architecture</div>
+        <div class="reason-desc">Understanding a model means understanding its internals. I design custom architectures, implement attention mechanisms, apply neural architecture search, and fine-tune foundation models for domain-specific tasks. That architectural depth is the difference between a working prototype and a performant production system.</div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-num">03</div>
+        <div class="reason-title">Analytics That Drive Decisions</div>
+        <div class="reason-desc">Every model I ship is accompanied by rigorous analytics. KPI definition, experiment instrumentation, statistically sound A/B testing, and dashboards that communicate insight clearly to technical and non-technical audiences alike. Analysis without action is overhead &mdash; the work is only complete when it changes a decision.</div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-num">04</div>
+        <div class="reason-title">End-to-End Pipeline Ownership</div>
+        <div class="reason-desc">From raw data ingestion to user-facing inference, I own the entire pipeline. There is no handoff problem when one person understands the full stack &mdash; data contracts, feature logic, model behaviour, and deployment configuration are aligned by design, not by coordination overhead.</div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-num">05</div>
+        <div class="reason-title">Large Language Model Engineering</div>
+        <div class="reason-desc">I build RAG architectures, fine-tune foundation models on domain-specific corpora, engineer prompts at production scale, and expose AI capabilities through well-designed APIs. The organisations I work with gain access to advances in generative AI without absorbing the research cost themselves.</div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-num">06</div>
+        <div class="reason-title">Infrastructure Efficiency</div>
+        <div class="reason-desc">Inference cost is a performance metric. Through quantisation, intelligent batching, response caching, and considered infrastructure choices, I have reduced serving costs by 30&ndash;50% on production systems without compromising latency or accuracy. Compute budgets receive the same rigour as model benchmarks.</div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-num">07</div>
+        <div class="reason-title">Domain Versatility</div>
+        <div class="reason-desc">Financial fraud detection, clinical diagnostics, e-commerce personalisation, logistics vision systems, and conversational AI &mdash; applied ML across sectors develops a pattern recognition that domain-specific engineers rarely acquire. The instincts transfer. The ramp-up time does not.</div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-num">08</div>
+        <div class="reason-title">Technical Leadership</div>
+        <div class="reason-desc">Model behaviour translated into business language. Code written to be read, not just executed. Technical reviews that raise the quality of the whole team. I contribute as an individual and raise the capability of those around me &mdash; that combination is what separates a senior engineer from a senior contributor.</div>
+      </div>
+    </div>
+    <div class="recruiter-cta reveal">
+      <h3>Considering Steven for Your Team?</h3>
+      <p>Whether you are building a first ML product, scaling an existing AI system, or bringing generative capabilities into your organisation &mdash; the engineering depth, research grounding, and delivery record are here.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <button class="btn-primary" onclick="smoothScroll('contact')">Start a Conversation</button>
+        <button class="btn-outline" onclick="smoothScroll('cv')">Review My Resume</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CV -->
+<section id="cv" style="background:linear-gradient(180deg,var(--bg),var(--surface) 50%,var(--bg))">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-tag">Resume / CV</div>
+      <h2 class="section-title">Resume<br>Analysis</h2>
+      <p class="section-sub">Upload a CV &mdash; the model extracts key achievements, benchmarks technical depth, and produces a positioning analysis relative to the ML and data engineering talent market.</p>
+    </div>
+    <div class="cv-layout reveal">
+      <div>
+        <div class="cv-upload-zone" id="uploadZone">
+          <input type="file" id="cvFileInput" accept=".txt,.pdf,.doc,.docx"/>
+          <div class="upload-title">Upload Resume</div>
+          <div class="upload-hint">.txt, .pdf, .doc, .docx &mdash; or click to browse</div>
+          <div class="cv-file-name" id="cvFileName"></div>
+        </div>
+        <div class="cv-actions">
+          <button class="btn-analyze" id="analyzeBtn" onclick="analyzeCV()" disabled>Analyse</button>
+          <button class="btn-download" id="downloadBtn" onclick="downloadCV()" disabled>Download Resume</button>
+        </div>
+        <div style="margin-top:1.5rem;padding:1.2rem;background:rgba(123,97,255,.07);border:1px solid rgba(123,97,255,.2);border-radius:var(--r)">
+          <div style="font-size:.8rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">What the AI analyzes</div>
+          <ul style="font-size:.84rem;color:var(--muted);padding-left:1.1rem;line-height:2">
+            <li>Key measurable achievements with quantified impact</li>
+            <li>Technical strengths vs. market benchmarks</li>
+            <li>Positioning for ML, DL &amp; Data Analytics roles</li>
+            <li>Competitive edge over similar candidates</li>
+            <li>Interview preparation talking points</li>
+          </ul>
+        </div>
+      </div>
+      <div class="cv-result" id="cvResult">
+        <div class="cv-result-header">
+          <div class="cv-result-title">AI Analysis Output</div>
+          <div class="cv-status" id="cvStatus">Awaiting upload</div>
+        </div>
+        <div class="cv-output" id="cvOutput">
+          <div class="cv-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <div>Upload a CV to see AI-powered analysis</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section id="faq" style="position:relative;overflow:hidden">
+  <div class="faq-bg"></div>
+  <div class="section">
+    <div class="reveal">
+      <div class="section-tag">FAQ</div>
+      <h2 class="section-title">Common<br>Questions</h2>
+      <p class="section-sub">Direct answers to the questions that arise most often in conversations with hiring managers, technical leads, and engineering directors.</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What types of ML problems do you specialize in?<span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>My sweet spot is complex, high-impact ML problems that require both deep technical knowledge and strong engineering discipline. I've worked extensively on supervised learning (classification and regression at scale), deep neural networks for computer vision and NLP, recommendation systems, time-series forecasting for financial and operational data, anomaly detection, and large language model applications. I'm especially strong in situations where the model needs to go beyond accuracy &mdash; where fairness, explainability, latency, or cost constraints are also critical requirements.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How do you ensure models perform reliably in production?<span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>Production reliability is something I design for from day one. My approach includes comprehensive data validation at every pipeline stage, statistical drift detection for both feature and concept drift, shadow deployments and canary releases before full rollouts, clear rollback procedures with versioned artifacts in MLflow or W&B, automated retraining triggers when performance degrades, and alerting tied to business metrics &mdash; not just technical ones. I've maintained models with 99.9% uptime SLAs in high-throughput environments.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Can you handle both research and engineering sides of ML?<span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>Yes &mdash; and this dual capability is one of my strongest differentiators. On the research side, I read papers regularly, implement novel architectures from scratch, and have reproduced results from top venues like NeurIPS and ICLR. On the engineering side, I write production code with proper testing, CI/CD, documentation, and operational runbooks. I know when to use a simple logistic regression versus when a transformer is justified. The best ML engineer picks the right tool for the job &mdash; not the most impressive-sounding one.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What measurable impact have you delivered?<span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>Concrete outcomes include: 38% improvement in classification accuracy for a customer churn model that directly reduced monthly customer loss; 45% reduction in inference latency through model quantization and batching optimization; 60% reduction in false positive rate for a fraud detection system; a demand forecasting pipeline that reduced inventory waste by 22%; and a computer vision quality control system that replaced manual inspection at 10x the throughput. I always tie my work to metrics that appear in business reports.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Are you open to remote, hybrid, or relocation opportunities?<span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>Absolutely. I have experience working in fully distributed teams across multiple time zones and have developed strong async communication practices. I'm comfortable with tools like Notion, Linear, Slack, and GitHub for remote-first workflows. For the right opportunity, I'm also open to hybrid arrangements or relocation, both locally and internationally. The best opportunities don't come with geographic constraints.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How do you stay current with the rapidly evolving AI/ML landscape?<span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>I maintain a daily reading habit of arXiv papers in ML, NLP, and systems areas. I follow practitioners at top labs on social media and in open-source communities. I contribute to or closely follow major open-source projects (Hugging Face, PyTorch, scikit-learn). I complete hands-on implementations of new techniques within weeks of publication. I also actively participate in Kaggle competitions, which gives me practical feedback on new approaches in competitive settings.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What is your experience with data engineering and pipelines?<span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>I treat data infrastructure as a first-class concern. I've built end-to-end data pipelines using Apache Airflow, Prefect, and dbt for transformation. I'm experienced with both batch and streaming architectures (Kafka, Spark Structured Streaming). I design data contracts and schemas upfront, implement data quality checks at multiple stages, and build data lineage documentation. I'm comfortable working with data at varying scales &mdash; from gigabytes on single machines to petabyte-scale distributed systems on Spark/BigQuery.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How do you approach working with cross-functional teams?<span class="faq-icon">+</span></div>
+        <div class="faq-a"><p>I start every project by aligning deeply with product and business stakeholders on what "success" actually means &mdash; before writing a single line of model code. I maintain shared experiment tracking dashboards so anyone can see progress. I write technical specs that non-ML engineers can review and critique. I conduct demo sessions focused on business outcomes, not model internals. I've successfully partnered with product managers, data analysts, backend engineers, UX designers, legal/compliance, and C-suite stakeholders.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact" style="background:linear-gradient(180deg,var(--bg),var(--surface) 50%,var(--bg))">
+  <div class="section">
+    <div class="reveal">
+      <div class="section-tag">Contact</div>
+      <h2 class="section-title">Start a<br>Conversation</h2>
+      <p class="section-sub">For recruitment enquiries, technical partnerships, or consulting engagements &mdash; all serious messages receive a response within 24 hours.</p>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-info">
+        <h3>Direct Lines</h3>
+        <p>For recruitment opportunities, include the role, company, and a concise description of the problem you are solving. That context allows for a substantive first reply rather than a generic acknowledgement.</p>
+        <div class="contact-links">
+          <a class="contact-link" href="mailto:your@email.com" id="emailLink">
+            <div class="contact-link-icon" style="font-size:.72rem;font-weight:700;letter-spacing:.04em;color:var(--accent)">EMAIL</div>
+            <div>
+              <div style="font-size:.82rem;color:var(--muted);margin-bottom:.1rem">Email</div>
+              <div id="emailDisplay">your@email.com</div>
+            </div>
+          </a>
+          <a class="contact-link" href="#" target="_blank" rel="noreferrer" id="linkedinLink">
+            <div class="contact-link-icon" style="font-size:.72rem;font-weight:700;letter-spacing:.04em;color:var(--accent)">LI</div>
+            <div>
+              <div style="font-size:.82rem;color:var(--muted);margin-bottom:.1rem">LinkedIn</div>
+              <div>linkedin.com/in/steven-mbugua-kamau</div>
+            </div>
+          </a>
+          <a class="contact-link" href="#" target="_blank" rel="noreferrer" id="ghContactLink">
+            <div class="contact-link-icon" style="background:rgba(123,97,255,.1);font-size:.72rem;font-weight:700;letter-spacing:.04em;color:var(--accent2)">GH</div>
+            <div>
+              <div style="font-size:.82rem;color:var(--muted);margin-bottom:.1rem">GitHub</div>
+              <div id="ghContactUser">github.com/your-username</div>
+            </div>
+          </a>
+        </div>
+        <div style="margin-top:1.4rem;padding:1rem 1.2rem;background:rgba(0,255,179,.06);border:1px solid rgba(0,255,179,.2);border-radius:var(--r)">
+          <div style="font-size:.8rem;font-weight:700;color:var(--accent3);margin-bottom:.4rem;letter-spacing:.08em;text-transform:uppercase">Open To</div>
+          <div style="font-size:.85rem;color:var(--muted);line-height:2">
+            &ndash;&ensp;Full-time ML &amp; AI Engineering roles<br>
+            &ndash;&ensp;Senior, Staff, and Principal Engineer positions<br>
+            &ndash;&ensp;Contract and consulting engagements<br>
+            &ndash;&ensp;Technical advisory roles<br>
+            &ndash;&ensp;Remote-first and global opportunities
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <form id="contactForm" onsubmit="submitContact(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Name</label>
+              <input type="text" name="name" placeholder="John Smith" required/>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" name="email" placeholder="john@company.com" required/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Company / Organization</label>
+            <input type="text" name="company" placeholder="Your company name"/>
+          </div>
+          <div class="form-group">
+            <label>Opportunity Type</label>
+            <select name="type">
+              <option value="">Select type&hellip;</option>
+              <option>Full-time Role</option>
+              <option>Contract / Consulting</option>
+              <option>Technical Advisory</option>
+              <option>Collaboration</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea name="message" placeholder="Tell me about the role, the problem you're solving, or what you're looking to build&hellip;" required></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="submitBtn">Send Message</button>
+          <div class="form-msg" id="formMsg"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div><strong>Steven Kamau Mbugua</strong> &mdash; ML &amp; Deep Learning Engineer &middot; Founder, <strong>Axon Lattice Labs</strong></div>
+  <div class="footer-links">
+    <a href="#hero">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#repos">Projects</a>
+    <a href="#cv">Resume</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+// ── CONFIG ── Edit these to personalise ──────────────────────
+const CONFIG = {
+  githubUsername: 'kamaumbugua-dev',
+  backendUrl: '',
+  email: 'stevenk710@gmail.com',
+  linkedin: 'https://www.linkedin.com/in/steven-mbugua-kamau',
+  formspreeId: 'mvzwezyl',
+  cvDownloadUrl: ''
+};
+// ────────────────────────────────────────────────────────────
+
+// Apply config to DOM
+document.getElementById('emailLink').href = 'mailto:' + CONFIG.email;
+document.getElementById('emailDisplay').textContent = CONFIG.email;
+document.getElementById('linkedinLink').href = CONFIG.linkedin;
+document.getElementById('ghUser').textContent = '@' + CONFIG.githubUsername;
+document.getElementById('ghContactUser').textContent = 'github.com/' + CONFIG.githubUsername;
+document.getElementById('ghContactLink').href = 'https://github.com/' + CONFIG.githubUsername;
+
+// ── NAV ──────────────────────────────────────────────────────
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', function() {
+  navEl.classList.toggle('scrolled', window.scrollY > 50);
+  updateActiveNav();
+});
+function updateActiveNav() {
+  var sections = document.querySelectorAll('section[id]');
+  var scrollY = window.scrollY + 90;
+  sections.forEach(function(s) {
+    var link = document.querySelector('.nav-links a[href="#' + s.id + '"]');
+    if (link) link.classList.toggle('active', scrollY >= s.offsetTop && scrollY < s.offsetTop + s.offsetHeight);
+  });
+}
+function smoothScroll(id) {
+  var el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+document.querySelectorAll('.nav-links a').forEach(function(a) {
+  a.addEventListener('click', function() { document.getElementById('navLinks').classList.remove('open'); });
+});
+
+// ── NEURAL NET CANVAS ────────────────────────────────────────
+(function() {
+  var canvas = document.getElementById('hero-canvas');
+  var ctx = canvas.getContext('2d');
+  var W, H, nodes = [];
+  var N = 65, CONN = 135, SPEED = 0.3;
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  function init() {
+    nodes = [];
+    for (var i = 0; i < N; i++) {
+      nodes.push({ x: Math.random()*W, y: Math.random()*H,
+        vx: (Math.random()-.5)*SPEED, vy: (Math.random()-.5)*SPEED,
+        r: Math.random()*1.8+1 });
+    }
+  }
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    for (var i = 0; i < N; i++) {
+      for (var j = i+1; j < N; j++) {
+        var dx = nodes[i].x-nodes[j].x, dy = nodes[i].y-nodes[j].y;
+        var d = Math.sqrt(dx*dx+dy*dy);
+        if (d < CONN) {
+          var a = (1-d/CONN)*0.22;
+          var g = ctx.createLinearGradient(nodes[i].x,nodes[i].y,nodes[j].x,nodes[j].y);
+          g.addColorStop(0,'rgba(200,80,14,'+a+')');
+          g.addColorStop(1,'rgba(224,120,32,'+a+')');
+          ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y);
+          ctx.strokeStyle = g; ctx.lineWidth = .65; ctx.stroke();
+        }
+      }
+    }
+    nodes.forEach(function(n) {
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+      ctx.fillStyle = 'rgba(200,80,14,0.38)'; ctx.fill();
+      n.x += n.vx; n.y += n.vy;
+      if (n.x<0||n.x>W) n.vx*=-1;
+      if (n.y<0||n.y>H) n.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', function() { resize(); init(); });
+  resize(); init(); draw();
+})();
+
+// ── TYPEWRITER ───────────────────────────────────────────────
+(function() {
+  var phrases = ['Shipping Models to Production.','Engineering Neural Networks.','Transforming Data into Value.','Building Tomorrow\'s AI Today.'];
+  var pi = 0, ci = 0, del = false;
+  var el = document.getElementById('typed-text');
+  function type() {
+    var cur = phrases[pi];
+    if (!del) { el.textContent = cur.slice(0,++ci); if (ci===cur.length){del=true;setTimeout(type,2400);return;} }
+    else { el.textContent = cur.slice(0,--ci); if (ci===0){del=false;pi=(pi+1)%phrases.length;} }
+    setTimeout(type, del?42:78);
+  }
+  setTimeout(type,1400);
+})();
+
+// ── COUNTERS ─────────────────────────────────────────────────
+function animateCounters() {
+  document.querySelectorAll('[data-count]').forEach(function(el) {
+    var target = parseInt(el.dataset.count);
+    var suffix = el.dataset.suffix || '+';
+    var dur = 1800, step = 16, current = 0, inc = target/(dur/step);
+    var t = setInterval(function() {
+      current = Math.min(current+inc, target);
+      el.textContent = Math.floor(current) + suffix;
+      if (current >= target) clearInterval(t);
+    }, step);
+  });
+}
+
+// ── SCROLL REVEAL ────────────────────────────────────────────
+var revealObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.skill-bar').forEach(function(bar) {
+        bar.style.width = bar.dataset.pct + '%';
+      });
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(function(el) { revealObs.observe(el); });
+
+var counted = false;
+var statsEl = document.querySelector('.hero-stats');
+var heroObs = new IntersectionObserver(function(entries) {
+  if (entries[0].isIntersecting && !counted) { counted = true; animateCounters(); }
+}, { threshold: 0.4 });
+if (statsEl) heroObs.observe(statsEl);
+
+// ── 3D TILT ──────────────────────────────────────────────────
+document.querySelectorAll('.skill-card,.reason-card,.repo-card').forEach(function(card) {
+  card.addEventListener('mousemove', function(e) {
+    var r = card.getBoundingClientRect();
+    var x = (e.clientX-r.left)/r.width-.5;
+    var y = (e.clientY-r.top)/r.height-.5;
+    card.style.transform = 'translateY(-4px) rotateX('+(-y*6)+'deg) rotateY('+(x*6)+'deg)';
+    card.style.transition = 'transform .1s';
+  });
+  card.addEventListener('mouseleave', function() {
+    card.style.transform = '';
+    card.style.transition = 'transform .35s cubic-bezier(.16,1,.3,1)';
+  });
+});
+
+// ── GITHUB ACTIVITY ──────────────────────────────────────────
+function fetchGitHubActivity() {
+  fetch(CONFIG.backendUrl + '/api/github/activity')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var dot = document.getElementById('ghDot');
+      var ring = document.getElementById('ghRing');
+      var status = document.getElementById('ghStatus');
+      if (data.active) {
+        dot.classList.remove('inactive');
+        ring.style.display = '';
+        status.textContent = 'Active on GitHub \u00b7 last 24h';
+      } else {
+        dot.classList.add('inactive');
+        ring.style.display = 'none';
+        status.textContent = 'GitHub \u00b7 Active Developer';
+      }
+    })
+    .catch(function() {
+      document.getElementById('ghStatus').textContent = 'GitHub \u00b7 Active Developer';
+    });
+}
+fetchGitHubActivity();
+setInterval(fetchGitHubActivity, 60000);
+
+// ── GITHUB REPOS ─────────────────────────────────────────────
+var LANG_COLORS = {
+  'Python':'#3572A5','JavaScript':'#f1e05a','TypeScript':'#2b7489',
+  'Jupyter Notebook':'#DA5B0B','HTML':'#e34c26','CSS':'#563d7c',
+  'Shell':'#89e051','R':'#198CE7','Go':'#00ADD8','C':'#555','C++':'#f34b7d'
+};
+var LANG_INSIGHTS = {
+  'Python': 'Python-based ML/data engineering project demonstrating production-grade AI development.',
+  'Jupyter Notebook': 'In-depth exploratory analysis and model prototyping with fully documented methodology and results.',
+  'default': 'Demonstrates strong engineering fundamentals and practical application of ML/AI concepts.'
+};
+
+document.getElementById('ghProfileLink').href = 'https://github.com/' + CONFIG.githubUsername;
+
+function fetchGitHubRepos() {
+  var grid = document.getElementById('reposGrid');
+  fetch(CONFIG.backendUrl + '/api/github/repos')
+    .then(function(r) { if(!r.ok) throw new Error(); return r.json(); })
+    .then(function(data) {
+      var repos = data.repos || [];
+      if (!repos.length) throw new Error();
+      grid.innerHTML = repos.map(function(repo) {
+        var color = LANG_COLORS[repo.language] || '#888';
+        var insight = LANG_INSIGHTS[repo.language] || LANG_INSIGHTS['default'];
+        var updated = new Date(repo.pushed_at).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+        return '<div class="repo-card">' +
+          '<div class="repo-top">' +
+            '<div class="repo-name">' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>' +
+              '<a href="' + repo.url + '" target="_blank" rel="noreferrer">' + repo.name + '</a>' +
+            '</div>' +
+            (repo.language ? '<span class="lang-dot" style="--c:' + color + '">' + repo.language + '</span>' : '') +
+          '</div>' +
+          '<div class="repo-desc">' + (repo.description || 'A focused ML/data engineering project. Click to explore the code and documentation.') + '</div>' +
+          '<div class="repo-meta"><span>\u2b50 ' + repo.stars + '</span><span>\ud83c\udf74 ' + repo.forks + '</span><span>Updated ' + updated + '</span></div>' +
+          '<div class="repo-analysis">' + insight + '</div>' +
+        '</div>';
+      }).join('');
+    })
+    .catch(function() {
+      grid.innerHTML = '<div class="repo-placeholder">' +
+        '<p style="margin-bottom:1rem">Set your GitHub username in the <code style="background:rgba(255,255,255,.08);padding:.1rem .4rem;border-radius:4px">CONFIG</code> at the top of the script, then start the backend server.</p>' +
+        '<a href="https://github.com/' + CONFIG.githubUsername + '" target="_blank" rel="noreferrer" class="btn-outline" style="display:inline-flex;align-items:center;gap:.5rem">View GitHub Profile</a>' +
+      '</div>';
+    });
+}
+fetchGitHubRepos();
+
+// ── GITHUB ACTIVITY ──────────────────────────────────────────
+document.getElementById('ghActivityLink').href = 'https://github.com/' + CONFIG.githubUsername;
+
+function fetchGitHubActivity_events() {
+  var grid = document.getElementById('activityGrid');
+  fetch(CONFIG.backendUrl + '/api/github/events')
+    .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
+    .then(function(data) {
+      var events = data.events || [];
+      if (!events.length) throw new Error();
+      grid.innerHTML = events.map(function(ev) {
+        var dotHtml = ev.recent
+          ? '<span class="event-dot-wrap"><span class="event-dot"></span><span class="event-dot-ring"></span></span>'
+          : '<span class="event-dot-wrap"><span class="event-dot stale"></span></span>';
+        var detailHtml = ev.detail
+          ? '<div class="event-detail">' + ev.detail + '</div>'
+          : '';
+        return '<div class="event-tile" style="border-left-color:' + ev.color + '">' +
+          '<div class="event-tile-top">' +
+            '<span class="event-label" style="--c:' + ev.color + '">' + ev.label + '</span>' +
+            dotHtml +
+          '</div>' +
+          '<a class="event-repo" href="' + ev.repoUrl + '" target="_blank" rel="noreferrer">' + ev.repo + '</a>' +
+          '<div class="event-summary">' + ev.summary + '</div>' +
+          detailHtml +
+          '<div class="event-time">' + ev.timeAgo + '</div>' +
+        '</div>';
+      }).join('');
+    })
+    .catch(function() {
+      grid.innerHTML = '<div class="activity-empty">Activity feed unavailable &mdash; ensure the API is reachable.</div>';
+    });
+}
+fetchGitHubActivity_events();
+setInterval(fetchGitHubActivity_events, 120000);
+
+// ── CV UPLOAD ────────────────────────────────────────────────
+var cvFileObj = null, cvTextContent = '';
+var uploadZone = document.getElementById('uploadZone');
+var cvFileInput = document.getElementById('cvFileInput');
+
+uploadZone.addEventListener('dragover', function(e) { e.preventDefault(); uploadZone.classList.add('dragover'); });
+uploadZone.addEventListener('dragleave', function() { uploadZone.classList.remove('dragover'); });
+uploadZone.addEventListener('drop', function(e) {
+  e.preventDefault(); uploadZone.classList.remove('dragover');
+  if (e.dataTransfer.files[0]) handleCVFile(e.dataTransfer.files[0]);
+});
+cvFileInput.addEventListener('change', function(e) { if (e.target.files[0]) handleCVFile(e.target.files[0]); });
+
+function handleCVFile(file) {
+  cvFileObj = file;
+  document.getElementById('cvFileName').textContent = '\ud83d\udcce ' + file.name;
+  document.getElementById('analyzeBtn').disabled = false;
+  document.getElementById('downloadBtn').disabled = false;
+  document.getElementById('cvStatus').textContent = 'Loaded: ' + file.name;
+  document.getElementById('cvStatus').className = 'cv-status ready';
+  var ext = file.name.split('.').pop().toLowerCase();
+  if (ext === 'txt') {
+    file.text().then(function(t) { cvTextContent = t; });
+  } else {
+    cvTextContent = '[File: ' + file.name + ']\nFormat: ' + ext.toUpperCase() + '\nFile loaded successfully. Backend will process this format.';
+  }
+  setCVOutput('<div class="cv-placeholder"><div style="font-size:.9rem;color:var(--accent3);margin-bottom:.5rem">\u2713 File loaded successfully</div><div>Click "Analyze with AI" to extract insights.</div></div>');
+}
+
+function analyzeCV() {
+  if (!cvTextContent) return;
+  var btn = document.getElementById('analyzeBtn');
+  var status = document.getElementById('cvStatus');
+  btn.disabled = true;
+  btn.textContent = 'Analyzing\u2026';
+  status.textContent = 'LLM analysis in progress\u2026';
+  status.className = 'cv-status loading';
+  setCVOutput('<div class="cv-placeholder"><div class="spinner"></div><div style="margin-top:.8rem">Extracting insights\u2026</div></div>');
+  fetch(CONFIG.backendUrl + '/api/cv/analyze', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: cvTextContent })
+  })
+    .then(function(r) { if(!r.ok) throw new Error(); return r.json(); })
+    .then(function(data) {
+      var html = data.analysis
+        .replace(/#{1,3}\s?(.+)/g,'<h3 style="color:var(--accent);margin:.8rem 0 .4rem;font-size:.9rem">$1</h3>')
+        .replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--text)">$1</strong>')
+        .replace(/^[-\u2022]\s(.+)/gm,'<li>$1</li>')
+        .replace(/\n\n/g,'</p><p style="margin-top:.8rem">');
+      setCVOutput('<div class="cv-output has-content" style="padding:.4rem 0">' + html + '</div>');
+      status.textContent = 'Analysis complete';
+      status.className = 'cv-status ready';
+    })
+    .catch(function() {
+      setCVOutput('<div class="cv-placeholder" style="color:#ff8080">Analysis failed. Please try again &mdash; if the issue persists, contact stevenk710@gmail.com.</div>');
+      status.textContent = 'Error'; status.className = 'cv-status';
+    })
+    .finally(function() {
+      btn.disabled = false; btn.textContent = '\ud83d\udd0d Analyze with AI';
+    });
+}
+
+function setCVOutput(html) { document.getElementById('cvOutput').innerHTML = html; }
+
+function downloadCV() {
+  if (cvFileObj) {
+    var url = URL.createObjectURL(cvFileObj);
+    var a = document.createElement('a'); a.href = url; a.download = cvFileObj.name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } else if (CONFIG.cvDownloadUrl) { window.open(CONFIG.cvDownloadUrl); }
+}
+
+// ── FAQ ──────────────────────────────────────────────────────
+function toggleFaq(el) {
+  var item = el.closest('.faq-item');
+  var wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(i) { i.classList.remove('open'); });
+  if (!wasOpen) item.classList.add('open');
+}
+
+// ── CONTACT FORM ─────────────────────────────────────────────
+function submitContact(e) {
+  e.preventDefault();
+  var btn = document.getElementById('submitBtn');
+  var msg = document.getElementById('formMsg');
+  btn.disabled = true; btn.textContent = 'Sending\u2026';
+  var data = new FormData(e.target);
+  fetch('https://formspree.io/f/' + CONFIG.formspreeId, {
+    method: 'POST', body: data, headers: { Accept: 'application/json' }
+  })
+    .then(function(r) {
+      if (r.ok) {
+        msg.className = 'form-msg success';
+        msg.textContent = '\u2713 Message sent! I\'ll respond within 24 hours.';
+        e.target.reset();
+      } else throw new Error();
+    })
+    .catch(function() {
+      msg.className = 'form-msg error';
+      msg.textContent = 'Something went wrong. Please email me directly.';
+    })
+    .finally(function() { btn.disabled = false; btn.textContent = 'Send Message'; });
+}
+</script>
+</body>
+</html>

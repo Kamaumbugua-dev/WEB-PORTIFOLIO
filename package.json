@@ -1,0 +1,10 @@
+{
+  "name": "steven-mbugua-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio of Steven Mbugua Kamau — ML & Deep Learning Engineer, Founder of Axon Lattice Labs",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "groq-sdk": "^0.3.3"
+  }
+}

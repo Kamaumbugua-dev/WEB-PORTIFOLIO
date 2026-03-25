@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    { "src": "/api/github/activity", "dest": "/api/github/activity.js" },
+    { "src": "/api/github/repos",    "dest": "/api/github/repos.js" },
+    { "src": "/api/github/events",   "dest": "/api/github/events.js" },
+    { "src": "/api/cv/analyze",      "dest": "/api/cv/analyze.js" },
+    { "src": "/(.*)",                "dest": "/index.html" }
+  ]
+}
