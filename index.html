@@ -1079,7 +1079,7 @@ const CONFIG = {
   email: 'stevenk710@gmail.com',
   linkedin: 'https://www.linkedin.com/in/steven-mbugua-kamau',
   formspreeId: 'mvzwezyl',
-  cvDownloadUrl: ''
+  cvDownloadUrl: 'https://raw.githubusercontent.com/Kamaumbugua-dev/WEB-PORTIFOLIO/master/MLOPS%20CV%20updated%20(1).pdf'
 };
 // ────────────────────────────────────────────────────────────
 
@@ -1093,7 +1093,7 @@ const CONFIG = {
     dlBtn.href = url;
     notSet.style.display = 'none';
     var iframe = document.createElement('iframe');
-    iframe.src = url + '#toolbar=1&view=FitH';
+    iframe.src = 'https://docs.google.com/viewer?url=' + encodeURIComponent(url) + '&embedded=true';
     iframe.title = 'Steven Kamau Mbugua Resume';
     iframe.setAttribute('loading', 'lazy');
     // Fallback link inside iframe for browsers that block embed
