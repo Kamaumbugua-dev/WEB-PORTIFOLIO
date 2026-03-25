@@ -444,6 +444,25 @@ footer strong{color:var(--accent);font-weight:700}
   .hero-content{padding:1.8rem 1.2rem;border-radius:24px}
 }
 
+/* ─── RESUME VIEWER ─────────────────────────────────────────── */
+.resume-viewer-card{
+  background:rgba(255,255,255,0.20);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.46);
+  border-radius:var(--r2);overflow:hidden;
+  box-shadow:var(--glass-shadow)}
+.resume-viewer-header{display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;padding:1.2rem 1.6rem;border-bottom:1px solid rgba(255,255,255,0.35);flex-wrap:wrap}
+.resume-embed-wrap{width:100%;background:rgba(255,255,255,0.08);min-height:680px;
+  display:flex;align-items:center;justify-content:center;position:relative}
+.resume-embed-wrap iframe{width:100%;height:680px;border:none;display:block}
+.resume-not-set{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:3rem;text-align:center}
+@media(max-width:600px){
+  .resume-embed-wrap,.resume-embed-wrap iframe{min-height:420px;height:420px}
+}
+
 /* ─── CV INSIGHTS PANEL ─────────────────────────────────────── */
 .cv-insights-wrap{
   background:rgba(255,255,255,0.20);
@@ -816,6 +835,33 @@ footer strong{color:var(--accent);font-weight:700}
       <h2 class="section-title">Resume<br>Analysis</h2>
       <p class="section-sub">Upload a CV &mdash; the model extracts key achievements, benchmarks technical depth, and produces a positioning analysis relative to the ML and data engineering talent market.</p>
     </div>
+    <!-- ── PUBLIC RESUME VIEWER ─────────────────────────────── -->
+    <div id="resumeViewerWrap" class="reveal" style="margin-bottom:2.5rem">
+      <div class="resume-viewer-card">
+        <div class="resume-viewer-header">
+          <div>
+            <div style="font-size:1rem;font-weight:700;color:var(--text)">Steven Kamau Mbugua &mdash; Resume</div>
+            <div style="font-size:.82rem;color:var(--muted);margin-top:.2rem">ML &amp; Deep Learning Engineer &middot; Axon Lattice Labs</div>
+          </div>
+          <a id="resumeDownloadBtn" href="#" download="Steven_Kamau_Mbugua_Resume.pdf"
+            style="display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.4rem;
+            background:var(--grad);border-radius:99px;font-weight:700;font-size:.88rem;
+            color:#fff;text-decoration:none;transition:.25s;white-space:nowrap;flex-shrink:0"
+            onmouseover="this.style.filter='brightness(1.1)';this.style.transform='translateY(-2px)'"
+            onmouseout="this.style.filter='';this.style.transform=''">
+            &#8675; Download Resume
+          </a>
+        </div>
+        <div class="resume-embed-wrap" id="resumeEmbedWrap">
+          <div class="resume-not-set" id="resumeNotSet">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.3;margin-bottom:.8rem"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <div style="font-size:.9rem;color:var(--muted)">Resume not configured yet</div>
+            <div style="font-size:.8rem;color:var(--muted);margin-top:.4rem;opacity:.7">Set <code style="background:rgba(0,0,0,.07);padding:.1rem .4rem;border-radius:4px">cvDownloadUrl</code> in CONFIG</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="cv-layout reveal">
       <div>
         <div class="cv-upload-zone" id="uploadZone">
@@ -1036,6 +1082,31 @@ const CONFIG = {
   cvDownloadUrl: ''
 };
 // ────────────────────────────────────────────────────────────
+
+// ── RESUME VIEWER INIT ───────────────────────────────────────
+(function() {
+  var url = CONFIG.cvDownloadUrl;
+  var dlBtn = document.getElementById('resumeDownloadBtn');
+  var embedWrap = document.getElementById('resumeEmbedWrap');
+  var notSet = document.getElementById('resumeNotSet');
+  if (url) {
+    dlBtn.href = url;
+    notSet.style.display = 'none';
+    var iframe = document.createElement('iframe');
+    iframe.src = url + '#toolbar=1&view=FitH';
+    iframe.title = 'Steven Kamau Mbugua Resume';
+    iframe.setAttribute('loading', 'lazy');
+    // Fallback link inside iframe for browsers that block embed
+    var fallback = '<p style="padding:1rem;text-align:center;color:#666">Your browser cannot display the PDF. ' +
+      '<a href="' + url + '" target="_blank" style="color:#C8500E;font-weight:700">Open in new tab</a></p>';
+    embedWrap.innerHTML = '';
+    embedWrap.appendChild(iframe);
+    iframe.onerror = function() { embedWrap.innerHTML = fallback; };
+  } else {
+    dlBtn.style.opacity = '0.4';
+    dlBtn.style.pointerEvents = 'none';
+  }
+})();
 
 // Apply config to DOM
 document.getElementById('emailLink').href = 'mailto:' + CONFIG.email;
@@ -1569,12 +1640,17 @@ function analyzeCV() {
 function setCVOutput(html) { document.getElementById('cvOutput').innerHTML = html; }
 
 function downloadCV() {
-  if (cvFileObj) {
+  if (CONFIG.cvDownloadUrl) {
+    var a = document.createElement('a');
+    a.href = CONFIG.cvDownloadUrl;
+    a.download = 'Steven_Kamau_Mbugua_Resume.pdf';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  } else if (cvFileObj) {
     var url = URL.createObjectURL(cvFileObj);
     var a = document.createElement('a'); a.href = url; a.download = cvFileObj.name;
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     URL.revokeObjectURL(url);
-  } else if (CONFIG.cvDownloadUrl) { window.open(CONFIG.cvDownloadUrl); }
+  }
 }
 
 // ── FAQ ──────────────────────────────────────────────────────
