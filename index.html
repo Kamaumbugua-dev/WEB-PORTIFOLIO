@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if(typeof pdfjsLib!=='undefined')pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 <style>
 /* ─── RESET & TOKENS ─────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -1303,18 +1305,59 @@ cvFileInput.addEventListener('change', function(e) { if (e.target.files[0]) hand
 
 function handleCVFile(file) {
   cvFileObj = file;
-  document.getElementById('cvFileName').textContent = '\ud83d\udcce ' + file.name;
-  document.getElementById('analyzeBtn').disabled = false;
+  document.getElementById('cvFileName').textContent = '\uD83D\uDCCE ' + file.name;
   document.getElementById('downloadBtn').disabled = false;
-  document.getElementById('cvStatus').textContent = 'Loaded: ' + file.name;
-  document.getElementById('cvStatus').className = 'cv-status ready';
+  document.getElementById('analyzeBtn').disabled = true;
+  document.getElementById('cvStatus').textContent = 'Reading file\u2026';
+  document.getElementById('cvStatus').className = 'cv-status loading';
+  setCVOutput('<div class="cv-placeholder"><div class="spinner"></div><div style="margin-top:.8rem">Reading file\u2026</div></div>');
+
   var ext = file.name.split('.').pop().toLowerCase();
-  if (ext === 'txt') {
-    file.text().then(function(t) { cvTextContent = t; });
+
+  if (ext === 'pdf') {
+    // Extract text from PDF using PDF.js
+    file.arrayBuffer().then(function(buf) {
+      return pdfjsLib.getDocument({ data: buf }).promise;
+    }).then(function(pdf) {
+      var pagePromises = [];
+      for (var i = 1; i <= pdf.numPages; i++) {
+        pagePromises.push(pdf.getPage(i).then(function(page) {
+          return page.getTextContent().then(function(tc) {
+            return tc.items.map(function(it) { return it.str; }).join(' ');
+          });
+        }));
+      }
+      return Promise.all(pagePromises);
+    }).then(function(pages) {
+      cvTextContent = pages.join('\n\n').trim();
+      if (!cvTextContent) throw new Error('empty');
+      document.getElementById('analyzeBtn').disabled = false;
+      document.getElementById('cvStatus').textContent = 'PDF read \u2014 ' + file.name;
+      document.getElementById('cvStatus').className = 'cv-status ready';
+      setCVOutput('<div class="cv-placeholder"><div style="font-size:.9rem;color:var(--accent);margin-bottom:.5rem">\u2713 PDF extracted successfully</div><div>Click \u201cAnalyze with AI\u201d to get insights.</div></div>');
+    }).catch(function() {
+      cvTextContent = '';
+      document.getElementById('cvStatus').textContent = 'Could not read PDF \u2014 try a .txt copy';
+      document.getElementById('cvStatus').className = 'cv-status';
+      setCVOutput('<div class="cv-placeholder" style="color:#cc4444">PDF text extraction failed.<br>Please save your CV as <strong>.txt</strong> and re-upload.</div>');
+    });
+
+  } else if (ext === 'txt') {
+    file.text().then(function(t) {
+      cvTextContent = t.trim();
+      document.getElementById('analyzeBtn').disabled = false;
+      document.getElementById('cvStatus').textContent = 'Loaded \u2014 ' + file.name;
+      document.getElementById('cvStatus').className = 'cv-status ready';
+      setCVOutput('<div class="cv-placeholder"><div style="font-size:.9rem;color:var(--accent);margin-bottom:.5rem">\u2713 File loaded</div><div>Click \u201cAnalyze with AI\u201d to get insights.</div></div>');
+    });
+
   } else {
-    cvTextContent = '[File: ' + file.name + ']\nFormat: ' + ext.toUpperCase() + '\nFile loaded successfully. Backend will process this format.';
+    // DOCX / DOC — can't extract client-side, tell user to paste text
+    cvTextContent = '';
+    document.getElementById('cvStatus').textContent = 'Use .txt or .pdf for analysis';
+    document.getElementById('cvStatus').className = 'cv-status';
+    setCVOutput('<div class="cv-placeholder"><div style="margin-bottom:.8rem;font-size:.9rem;color:var(--accent3)">\u26A0\uFE0F ' + ext.toUpperCase() + ' files cannot be read in the browser.</div><div style="font-size:.86rem;color:var(--muted)">Please save your CV as <strong style="color:var(--text)">.pdf</strong> or <strong style="color:var(--text)">.txt</strong> and re-upload.</div></div>');
   }
-  setCVOutput('<div class="cv-placeholder"><div style="font-size:.9rem;color:var(--accent3);margin-bottom:.5rem">\u2713 File loaded successfully</div><div>Click "Analyze with AI" to extract insights.</div></div>');
 }
 
 // ── CV STORE (localStorage database) ─────────────────────────
@@ -1438,24 +1481,37 @@ function analyzeCV() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ text: cvTextContent })
   })
-    .then(function(r) { if(!r.ok) throw new Error(); return r.json(); })
+    .then(function(r) {
+      return r.json().then(function(body) {
+        if (!r.ok) throw new Error(body.error || body.details || ('HTTP ' + r.status));
+        return body;
+      });
+    })
     .then(function(data) {
       setCVOutput('<div class="cv-output has-content" style="padding:.4rem 0">' + formatAnalysisHTML(data.analysis) + '</div>');
       status.textContent = 'Analysis complete \u2014 saved to storage';
       status.className = 'cv-status ready';
-      // Save to localStorage database
       var fname = cvFileObj ? cvFileObj.name : 'resume.txt';
       saveCVStore(fname, cvTextContent, data.analysis);
-      // Show banner
       var banner = document.getElementById('cvStoreBanner');
       banner.style.display = 'flex';
       banner.querySelector('.cv-store-filename').textContent = fname;
       banner.querySelector('.cv-store-date').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-      // Render skills showcase
       renderCVInsights(fname, data.analysis, new Date().toISOString());
     })
-    .catch(function() {
-      setCVOutput('<div class="cv-placeholder" style="color:#cc4444">Analysis failed. Please try again &mdash; if the issue persists, contact stevenk710@gmail.com.</div>');
+    .catch(function(err) {
+      var msg = err && err.message ? err.message : 'Unknown error';
+      var isKey = msg.toLowerCase().indexOf('api') !== -1 || msg.toLowerCase().indexOf('auth') !== -1 || msg.toLowerCase().indexOf('key') !== -1;
+      setCVOutput(
+        '<div class="cv-placeholder" style="text-align:left;padding:1.2rem">' +
+          '<div style="color:#cc4444;font-weight:700;margin-bottom:.6rem">\u26A0\uFE0F Analysis failed</div>' +
+          '<div style="font-size:.84rem;color:var(--muted);margin-bottom:.8rem">Error: <code style="background:rgba(0,0,0,.07);padding:.1rem .4rem;border-radius:4px">' + msg + '</code></div>' +
+          (isKey
+            ? '<div style="font-size:.84rem;color:var(--text)"><strong>Fix:</strong> Add <code style="background:rgba(0,0,0,.07);padding:.1rem .4rem;border-radius:4px">GROQ_API_KEY</code> to your Vercel project environment variables at<br><em>vercel.com &rarr; Project &rarr; Settings &rarr; Environment Variables</em></div>'
+            : '<div style="font-size:.84rem;color:var(--muted)">Check your Vercel function logs for details, or contact stevenk710@gmail.com.</div>'
+          ) +
+        '</div>'
+      );
       status.textContent = 'Error'; status.className = 'cv-status';
     })
     .finally(function() {
