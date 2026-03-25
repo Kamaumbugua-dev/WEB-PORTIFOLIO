@@ -1522,8 +1522,15 @@ function analyzeCV() {
     body: JSON.stringify({ text: cvTextContent })
   })
     .then(function(r) {
+      var status = r.status;
+      var ct = r.headers.get('content-type') || '';
+      if (!ct.includes('application/json')) {
+        return r.text().then(function(t) {
+          throw new Error('Server error (HTTP ' + status + '). Check Vercel → Project → Functions logs for details.');
+        });
+      }
       return r.json().then(function(body) {
-        if (!r.ok) throw new Error(body.error || body.details || ('HTTP ' + r.status));
+        if (!r.ok) throw new Error(body.error || body.details || ('HTTP ' + status));
         return body;
       });
     })
